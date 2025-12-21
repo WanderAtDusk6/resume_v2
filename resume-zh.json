@@ -42,9 +42,8 @@
       "endDate": "2025-12",
       "summary": "作为 DevOps 工程师，在 AWS 上构建与开发企业级 CI/CD 平台，通过团队自定义的声明式配置格式(IaC)驱动自动化部署，管理多环境（dev/uat/prod）的 AWS 资源；将 Databricks（统一数据分析与AI平台）的 特性功能集成至 CI/CD 流水线，结合环境隔离的权限控制，实现易用、安全可追溯的自动化交付流程。",
       "highlights": [
-        "业务范围：企业级 CI/CD 平台, 个人负责范围聚焦于数据+AI+安全合规",
+        "业务范围: 企业级 CI/CD 平台, 个人负责范围聚焦于数据+AI+安全合规",
         "技术易用性与推广: 公司CICD databricks 参考示例, 约50%由我编写，供应用与数据科学团队在 CI/CD 中参考使用",
-        "TODO  innovation team, 前20%绩效",
         ".PS: emmmmm事情有点杂，这段就写的空洞一点了，细节写在后面"
       ]
     },
@@ -63,7 +62,7 @@
       "url": "https://www.nokia.com/",
       "startDate": "2020-11",
       "endDate": "2021-06",
-      "summary": "TODO ",
+      // "summary": "TODO ",
       "highlights": ["熟悉测试", "熟悉软件交付规范", "敏捷开发"]
     }
   ],
@@ -72,35 +71,66 @@
     {
       "institution": "浙江科技大学",
       "url": "https://www.zust.edu.cn/",
-      "area": "材料成型及控制工程",
+      "area": "材料成型及控制工程 (自学转IT)",
       "studyType": "本科",
       "startDate": "2017-09",
       "endDate": "2021-06",
       "score": "-",
-      "courses": ["DB1101 - Basic SQL"],
-      "_summary": "4年专业绩点排名前30%，其中1年综测排名专业第1"
+      "courses": [
+        "(非科班,但校内选修过IT相关课程,在这列出)",
+        "人工智能创新特色班",
+        "数学建模特色班",
+        "acm选修课",
+        "c语言必修课",
+        "java工程师实训班(这个水过去的,算会也不算会)"
+      ],
+      "_summary": "四年专业绩点排名均前30%, 其中一年综测排名专业第一"
     }
   ],
   "awards": [
     {
-      "title": "Award",
-      "date": "2014-11-01",
-      "awarder": "Company",
-      "summary": "There is no spoon."
+      "title": "前20%绩效",
+      "date": "2025",
+      "awarder": "浙大网新恒天",
+      "summary": "#年度 #部门级 绩效271划分, 拿了2. TODO: 忘记截图了"
+    },
+    {
+      "title": "诺基亚杭州研发中心-第三届蓝鼎奖",
+      "date": "2023",
+      "awarder": "诺基亚",
+      "summary": "#公司级 #年度 Best ideas of Innovation. 发给大部门(NSB MN RAN Pz 2 HAZ)的, 然后没人要就放我这了... <img src='images/awards/nokia_ino_idea_langding3.jpg' />"
+    },
+    {
+      "title": "诺基亚（杭州）测试协会-2022年度Top3最佳测试工具奖",
+      "date": "2022",
+      "awarder": "诺基亚",
+      "summary": "#年度 <img src='images/awards/nokia_award_mix3.jpg' />"
+    },
+    {
+      "title": "自动化测试重要贡献者 | 最佳创意奖",
+      "date": "2022",
+      "awarder": "诺基亚",
+      "summary": "#部门级 #季度 <img src='images/awards/nokia_award_mix3.jpg' />"
+    },
+    {
+      "title": "四年专业绩点排名均前30%, 其中一年综测排名专业第一",
+      "date": "2019",
+      "awarder": "浙江科技大学",
+      "summary": "#学校"
+    },
+    {
+      "title": "竞赛获奖: 数学建模二 | 计算机设计三 | 高数",
+      "date": "2021",
+      "awarder": "浙江科技大学",
+      "summary": "#校级 PS. 全校级没啥含金量，写一起了，纯凑点学校方面的字数"
     }
   ],
   "certificates": [
     {
-      "name": "大学英语六级考试（CET-6）",
+      "name": "大学英语六级考试(CET-6)",
       "date": "2018",
       "issuer": "教育部",
       "url": "https://cet.neea.edu.cn/"
-    },
-    {
-      "name": "Certificate",
-      "date": "2021-11-07",
-      "issuer": "Company",
-      "url": "https://certificate.com"
     }
   ],
   "publications": [
@@ -113,6 +143,7 @@
     }
   ],
   "skills": [
+    // 精通>熟悉>掌握>入门
     {
       "name": "Web Development",
       "level": "Master",
@@ -121,8 +152,12 @@
   ],
   "languages": [
     {
-      "language": "English",
-      "fluency": "Native speaker"
+      "language": "中文",
+      "fluency": "母语"
+    },
+    {
+      "language": "英语",
+      "fluency": "六级"
     }
   ],
   "interests": [

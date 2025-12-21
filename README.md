@@ -1,5 +1,14 @@
 # resume_v2
 
+## 文件导出规范
+
+名称：`{目标岗位}_{姓名}_{工作经验年数}_{工作单位}_{学历}.pdf`
+可根据具体 job description, 调整`_{JD name or id}.pdf`。
+例如：
+
+- `开发运维大数据全栈_莫盛杰_5年经验.pdf`
+- `测开后端全栈_莫盛杰_2年经验_浙科诺基亚_本科.pdf`
+
 ## JSON Resume Schema
 
 本项目使用 [JSON Resume](https://jsonresume.org/) 标准格式来管理简历数据。
