@@ -1,0 +1,150 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
+  "basics": {
+    "name": "莫盛杰",
+    "label": "开发运维 | 大数据平台 | 全栈 | 测试开发",
+    "image": "images/my_profile.jpg",
+    "email": "kako_hanekawa@foxmail.com",
+    "phone": "+86 13588742119",
+    "url": "https://hanekawa.dpdns.org",
+    "summary": "5年开发经验()",
+    "location": {
+      "address": "钱塘区保利东湾",
+      "city": "杭州市",
+      "region": "浙江省",
+      "postalCode": "310000",
+      "countryCode": "CN"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "WanderAtDusk6",
+        "url": "https://github.com/WanderAtDusk6"
+      },
+      {
+        "network": "WeChat",
+        "username": "Mon_Panache_Studio",
+        "_description": "电话/微信同号: 13588742119"
+      },
+      {
+        "network": "QQ",
+        "username": "Mon_Panache_Studio",
+        "_description": "515442550"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "浙大网新恒天 | (派驻至)美国道富银行",
+      "position": "云平台-开发运维工程师",
+      "url": "https://www.insigma.com.cn/",
+      "startDate": "2023-11",
+      "endDate": "2025-12",
+      "summary": "作为 DevOps 工程师，在 AWS 上构建与开发企业级 CI/CD 平台，通过团队自定义的声明式配置格式(IaC)驱动自动化部署，管理多环境（dev/uat/prod）的 AWS 资源；将 Databricks（统一数据分析与AI平台）的 特性功能集成至 CI/CD 流水线，结合环境隔离的权限控制，实现易用、安全可追溯的自动化交付流程。",
+      "highlights": [
+        "业务范围：企业级 CI/CD 平台, 个人负责范围聚焦于数据+AI+安全合规",
+        "技术易用性与推广: 公司CICD databricks 参考示例, 约50%由我编写，供应用与数据科学团队在 CI/CD 中参考使用",
+        "TODO  innovation team, 前20%绩效",
+        ".PS: emmmmm事情有点杂，这段就写的空洞一点了，细节写在后面"
+      ]
+    },
+    {
+      "name": "诺基亚通信系统技术（北京）有限公司",
+      "position": "测试开发工程师",
+      "url": "https://www.nokia.com/",
+      "startDate": "2021-07",
+      "endDate": "2023-08",
+      "summary": "TODO ",
+      "highlights": ["公司级年度表彰"]
+    },
+    {
+      "name": "诺基亚通信系统技术（北京）有限公司",
+      "position": "Python开发实习生",
+      "url": "https://www.nokia.com/",
+      "startDate": "2020-11",
+      "endDate": "2021-06",
+      "summary": "TODO ",
+      "highlights": ["熟悉测试", "熟悉软件交付规范", "敏捷开发"]
+    }
+  ],
+  "volunteer": [],
+  "education": [
+    {
+      "institution": "浙江科技大学",
+      "url": "https://www.zust.edu.cn/",
+      "area": "材料成型及控制工程",
+      "studyType": "本科",
+      "startDate": "2017-09",
+      "endDate": "2021-06",
+      "score": "-",
+      "courses": ["DB1101 - Basic SQL"],
+      "_summary": "4年专业绩点排名前30%，其中1年综测排名专业第1"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Award",
+      "date": "2014-11-01",
+      "awarder": "Company",
+      "summary": "There is no spoon."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "大学英语六级考试（CET-6）",
+      "date": "2018",
+      "issuer": "教育部",
+      "url": "https://cet.neea.edu.cn/"
+    },
+    {
+      "name": "Certificate",
+      "date": "2021-11-07",
+      "issuer": "Company",
+      "url": "https://certificate.com"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Publication",
+      "publisher": "Company",
+      "releaseDate": "2014-10-01",
+      "url": "https://publication.com",
+      "summary": "Description…"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Web Development",
+      "level": "Master",
+      "keywords": ["HTML", "CSS", "JavaScript"]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native speaker"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Wildlife",
+      "keywords": ["Ferrets", "Unicorns"]
+    }
+  ],
+  "references": [
+    {
+      "name": "Jane Doe",
+      "reference": "Reference…"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Project",
+      "startDate": "2019-01-01",
+      "endDate": "2021-01-01",
+      "description": "Description  ",
+      "highlights": ["Won award at AIHacks 2016"],
+      "url": "https://project.com/"
+    }
+  ]
+}
