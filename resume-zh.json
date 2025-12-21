@@ -1,0 +1,294 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
+  "basics": {
+    "name": "莫盛杰",
+    "label": "开发运维 | 大数据平台 | 全栈 | 测试开发",
+    "image": "images/my_profile.jpg",
+    "email": "kako_hanekawa@foxmail.com",
+    "phone": "+86 13588742119",
+    "url": "https://hanekawa.dpdns.org",
+    "summary": "5年开发经验(2年开发运维+2.5年测试开发),云原生DevOps实践经验, 数据治理经验。担责于身,履责于行.能稳定按预期时间交付任务, 对于潜在延期风险, 也会及时沟通, 预警,持续跟进并做出调整。我会始终保持对前沿技术的好奇,探索与热情,也能结合实际情况,良好协作并切实的解决问题.于我而言,接触技术、理论、产品的同时,也是对世界认知的扩展,高山仰止,景行行止",
+    "location": {
+      "address": "钱塘区保利东湾",
+      "city": "杭州市",
+      "region": "浙江省",
+      "postalCode": "310000",
+      "countryCode": "CN"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "WanderAtDusk6",
+        "url": "https://github.com/WanderAtDusk6"
+      },
+      {
+        "network": "WeChat",
+        "username": "Mon_Panache_Studio",
+        "_description": "电话/微信同号: 13588742119"
+      },
+      {
+        "network": "QQ",
+        "username": "515442550"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "浙大网新恒天 | (派驻至)美国道富银行",
+      "position": "云平台-开发运维工程师",
+      "url": "https://www.insigma.com.cn/",
+      "startDate": "2023-11",
+      "endDate": "2025-12",
+      "summary": "作为 DevOps 工程师,在 AWS 上构建与开发企业级 CI/CD 平台,通过团队自定义的声明式配置格式(IaC)驱动自动化部署,管理多环境(dev/uat/prod)的 AWS 资源；将 Databricks(统一数据分析与AI平台) 的特性功能集成至 CI/CD 流水线,结合环境隔离的权限控制,实现易用、安全可追溯的自动化交付流程.",
+      "highlights": [
+        "业务范围: 企业级 CI/CD 平台, 个人负责范围聚焦于数据+AI+安全合规, 是CICD databricks的主要开发人员",
+        "技术易用性与推广: 公司CICD databricks 参考示例, 约50%由我编写,供应用与数据科学团队在 CI/CD 中参考使用",
+        "PS: 事情有点杂,这段就写的空洞一点了,细节写在后面 ;>_<)"
+      ]
+    },
+    {
+      "name": "诺基亚通信系统技术(北京)有限公司",
+      "position": "测试开发工程师",
+      "url": "https://www.nokia.com/",
+      "startDate": "2021-07",
+      "endDate": "2023-08",
+      "summary": "作为测试开发工程师,参与开发与维护公司自研自动化测试框架(Agent 5G All in Cloud),实现测试环境一键部署、软硬件适配及日志收集分析等功能;将创新idea落地的测试工具开发,并跨部门协作开发部分可演示原型,保障集群环境稳定,排查测试问题等.",
+      "highlights": [
+        "职责范围: 维护自动化测试框架, 简化测试环境部署, 软硬件适配",
+        "技术创新: 开发的测试工具获得公司级年度表彰"
+      ]
+    },
+    {
+      "name": "诺基亚通信系统技术(北京)有限公司",
+      "position": "Python开发实习生",
+      "url": "https://www.nokia.com/",
+      "startDate": "2020-11",
+      "endDate": "2021-06",
+      "highlights": ["熟悉软件交付规范", "熟悉测试", "敏捷开发"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "浙江科技大学",
+      "url": "https://www.zust.edu.cn/",
+      "area": "材料成型及控制工程 (自学转IT)",
+      "studyType": "本科",
+      "startDate": "2017-09",
+      "endDate": "2021-06",
+      "score": "-",
+      "courses": [
+        "(非科班,但校内选修过IT相关课程,在这列出)",
+        "人工智能创新特色班",
+        "数学建模特色班",
+        "acm选修课",
+        "c语言必修课",
+        "java工程师实训班(这个水过去的,算会也不算会)"
+      ],
+      "_summary": "四年专业绩点排名均前30%, 其中一年综测排名专业第一"
+    }
+  ],
+  "awards": [
+    {
+      "title": "前20%绩效",
+      "date": "2025",
+      "awarder": "浙大网新恒天",
+      "summary": "#年度 #部门级 绩效271划分, 拿了2. <img src='images/awards/insigma_performance.jpg' /> TODO: 忘记截图了"
+    },
+    {
+      "title": "诺基亚杭州研发中心-第三届蓝鼎奖",
+      "date": "2023",
+      "awarder": "诺基亚",
+      "summary": "#公司级 #年度 Best ideas of Innovation. 发给大部门(NSB MN RAN Pz 2 HAZ)的, 然后没人要就放我这了... <img src='images/awards/nokia_ino_idea_langding3.jpg' />"
+    },
+    {
+      "title": "诺基亚(杭州)测试协会-2022年度Top3最佳测试工具奖",
+      "date": "2022",
+      "awarder": "诺基亚",
+      "summary": "#年度 <img src='images/awards/nokia_award_mix3.jpg' />"
+    },
+    {
+      "title": "自动化测试重要贡献者 | 最佳创意奖",
+      "date": "2022",
+      "awarder": "诺基亚",
+      "summary": "#部门级 #季度 <img src='images/awards/nokia_award_mix3.jpg' />"
+    },
+    {
+      "title": "四年专业绩点排名均前30%, 其中一年综测排名专业第一",
+      "date": "2021",
+      "awarder": "浙江科技大学",
+      "summary": "#学校"
+    },
+    {
+      "title": "竞赛获奖: 数学建模二 | 计算机设计三 | 高数",
+      "date": "2021",
+      "awarder": "浙江科技大学",
+      "summary": "#校级 PS: 全校级没啥含金量,纯凑点学校方面的字数"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "大学英语六级考试(CET-6)",
+      "date": "2018",
+      "issuer": "教育部",
+      "url": "https://cet.neea.edu.cn/"
+    }
+  ],
+  "skills": [
+    {
+      "name": ".图例说明",
+      "keywords": ["🔵精通>🟢熟悉>🟡掌握>⚪入门"]
+    },
+    {
+      "name": "编程语言",
+      "keywords": [
+        "🔵Python",
+        "🟢Javascript/TS",
+        "🟢SQL",
+        "🟡Shell",
+        "🟡C",
+        "⚪Java",
+        "⚪Matlab"
+      ]
+    },
+    {
+      "name": "DevOps & CI/CD",
+      "keywords": [
+        "🟡GitHub Actions/GitLab",
+        "🟢Jenkins",
+        "🟢Ansible",
+        "🟢Docker",
+        "🟢IaaS",
+        "🟢Pipeline Devlop",
+        "⚪Code Scan"
+      ]
+    },
+    {
+      "name": "数据库",
+      "keywords": [
+        "所有数据库均能快速学习使用",
+        "🟡数据湖仓型",
+        "🟢关系型(RDBMS)",
+        "🟢文档型",
+        "⚪向量数据型"
+      ]
+    },
+    {
+      "name": "云服务",
+      "keywords": ["🟢AWS", "⚪阿里云", "🟡Serverless"]
+    },
+    {
+      "name": "容器技术",
+      "keywords": ["🟢Docker", "⚪Kubernetes"]
+    },
+    {
+      "name": "前端技术",
+      "keywords": [
+        "🟡HTML5/CSS3",
+        "🟢Vue3",
+        "🟢Nuxt/⚪Next",
+        "⚪Node.js",
+        "⚪React"
+      ]
+    },
+    {
+      "name": "AI应用相关",
+      "keywords": [
+        "🟢PyTorch",
+        "🟡Langchain",
+        "🟢Prompt/🟡Workflow/⚪Agent",
+        "🟡coze/n8n",
+        "⚪SD/ComfyUI",
+        "ML整体基础扎实,认知清晰"
+      ]
+    },
+    {
+      "name": "大数据",
+      "keywords": ["🟡Spark", "🟢Databricks"]
+    },
+    {
+      "name": "自动化测试",
+      "keywords": [
+        "🟡Pytest/Unittest",
+        "🟡Robot Framework",
+        "🟢Selenium",
+        "⚪Playwright"
+      ]
+    },
+    {
+      "name": "Web框架",
+      "keywords": ["🟡Django/FastApi/⚪Flask", "⚪Go/Gin"]
+    },
+    {
+      "name": "其他",
+      "keywords": ["🟢技术文档/demo编写", "🟢运维问题排查", "🟡Linux", "🟢Jira"]
+    }
+  ],
+  "languages": [
+    {
+      "language": "中文",
+      "fluency": "母语"
+    },
+    {
+      "language": "英语",
+      "fluency": "六级"
+    }
+  ],
+  "interests": [
+    {
+      "name": "...",
+      "keywords": ["旮旯game高手", "哈基米音乐鉴赏家"]
+    }
+  ],
+  "projects": [
+    // {
+    //   "name": "Project",
+    //   "startDate": "2019-01-01",
+    //   "endDate": "2021-01-01",
+    //   "description": "Description  ",
+    //   "highlights": ["Won award at AIHacks 2016"],
+    //   "url": "https://project.com/"
+    // },
+    //
+    {
+      "name": "Databricks平台与CICD Pipeline集成",
+      "description": "- 相关介绍: Databricks 大数据/AI平台,是Apache Spark创始团队对其的商业优化版,是Lakehouse架构, Delta Lake, MLflow,大规模机器学习和高级数据工程等领域的开创者或重要参与者. - 开发内容: 企业内CICD Pipeline, 使用自定义配置文件(.grd)进行AWS资源部署, 后因企业内部对databricks新功能支持需求较多,CICD databricks模块单独拆出, 开发方面,由团队架构师与我负责开发维护. - 其他说明: 说实话, 调用sdk二次开发这本身并不算难。这段经历的成长点主要在于, 学习了围绕数据的治理体系(云+湖上建仓),非常有启发意义, 也欢迎向我提问感兴趣的内容,或指一段DBS或其他数据平台的功能, 让我谈谈对其的理解。",
+      "highlights": [
+        "数据向: foreign catalog; monitor data quality; external data access; attribute-based access control等",
+        "计算向: 多种类cluster模板(如GPU cluster适配); instance pool; runtime与公司内部image service等",
+        "安全权限向: 角色权限设计(user/group/SP); 多环境fine-grained access control; SP token/ OAuth secret等",
+        "微服务: secret即时权限操作(AWS secret+DBS资源+前端同步）等",
+        "极简脚本部署服务: sql/notebook自动以用户所属组default SP权限,代执行代码",
+        "平台数据迁移: 因login条例修改, 迁移all user workspace数据至SSO user workspace下",
+        "项目开发相关: 遵循架构要求, 重构原SDK; 新功能支持与权限范围设计; enterprise account level log再分配至Elasticsearch和对应用户组",
+        "技术栈: Github action=>Jenkins=>AWS Cloudformation=>Ansible=>Databricks=>AWS Resources deploy"
+      ],
+      "url": "https://www.databricks.com/"
+    },
+    {
+      "name": "自动化测试项目开发与维护",
+      "description": "通信领域Cloud RAN架构中,企业内部测试环境的准备与自动化测试用例执行,",
+      "highlights": [
+        "负责内容:相关功能模块开发与维护,软硬件环境变化适配,文档维护,问题协助排查与解决",
+        "技术: python,shell,paramiko,robot framework"
+      ]
+    },
+    {
+      "name": "测试用例错误原因自动分类",
+      "description": "改进原有测试程序日志收集模块,收集错误栈信息,建立错误log数据集,与测试人员协助完成初版人工标注,完善收集-分析-再推送结果链路",
+      "highlights": [
+        "主要参与部分: 数据集设计与建立, 开发与跑通数据收集-初版算法分类-结果推送流程, 及后续日志数据的聚合与可视化",
+        "管理端汇总报表网页汇总，个人端分类结果邮件分发",
+        "效果:分类正确率≈90%(验证集上)",
+        "技术: sklearn,pytorch,grequests,pyecharts,mongodb"
+      ]
+    },
+    {
+      "name": "某通信模块内部消息流程可视化-前端部分",
+      "description": "某模块依照一份繁杂的信令流程规范图设计,因流程复杂+运行时产生log文件层次也复杂+测试人员排查问题不方便+解决经验文档零散, 编写log解析脚本+拆解原大信令图后+整理解决经验文档, 辅以前端可视化, 提高对此模块的问题排查效率",
+      "highlights": [
+        "负责内容: 前端ui,交互逻辑控制和效果的实现; 环节局部信令流程图状态样式呈现; 异常消息的解决方案栏的增删改查功能(便于集中解决经验文档)",
+        "技术栈: vue, pinia, Vue Router,(其他相关的: elasticsearch, logstash, kibana, mysql)"
+      ]
+    }
+  ]
+}

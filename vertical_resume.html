@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>莫盛杰 - 简历</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Header Section */
+      .header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px 40px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .header-content {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .header h1 {
+        font-size: 2em;
+        margin-bottom: 5px;
+        text-align: left;
+      }
+
+      .header .title {
+        font-size: 1em;
+        margin-bottom: 15px;
+        opacity: 0.9;
+        text-align: left;
+      }
+
+      .header .contact-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+        text-align: left;
+      }
+
+      .header .contact-info div {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.8em;
+        white-space: nowrap;
+      }
+
+      .header-images {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .header-image {
+        width: 80px;
+        height: 80px;
+        background-color: #fff;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2c3e50;
+        font-size: 0.8em;
+        overflow: hidden;
+      }
+
+      .header-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Profile Section */
+      .profile {
+        padding: 20px 40px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .profile h2 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 1.5em;
+        display: flex;
+        align-items: center;
+      }
+
+      .profile h2::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 24px;
+        background-color: #3498db;
+        margin-right: 10px;
+      }
+
+      .profile p {
+        margin-bottom: 5px;
+        line-height: 1.4;
+        font-size: 0.95em;
+      }
+
+      .profile p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Section Common Styles */
+      .section {
+        padding: 30px 40px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .section h2 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 1.5em;
+        display: flex;
+        align-items: center;
+      }
+
+      .section h2::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 24px;
+        background-color: #3498db;
+        margin-right: 10px;
+      }
+
+      /* Work Experience */
+      .work-item {
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .work-item .work-header {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 8px;
+        gap: 10px;
+      }
+
+      .work-item .work-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .work-item .work-info h3 {
+        color: #2c3e50;
+        margin-bottom: 3px;
+        font-size: 1.1em;
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .work-item .work-info .position {
+        color: #3498db;
+        font-weight: 500;
+        margin-bottom: 3px;
+        font-size: 0.9em;
+      }
+
+      .work-item .work-date {
+        color: #7f8c8d;
+        font-size: 0.85em;
+        white-space: nowrap;
+        min-width: 120px;
+        text-align: right;
+      }
+
+      .work-item .work-summary {
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 0.9em;
+      }
+
+      .work-item .work-highlights {
+        list-style-type: none;
+        margin-left: 10px;
+      }
+
+      .work-item .work-highlights li {
+        margin-bottom: 4px;
+        padding-left: 12px;
+        position: relative;
+        color: #555;
+        font-size: 0.9em;
+      }
+
+      .work-item .work-highlights li::before {
+        content: "•";
+        color: #3498db;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+      }
+
+      /* Education */
+      .education-item {
+        margin-bottom: 20px;
+      }
+
+      .education-header {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 8px;
+        gap: 10px;
+      }
+
+      .education-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .education-info h3 {
+        color: #2c3e50;
+        margin-bottom: 3px;
+        font-size: 1.1em;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+      }
+
+      .education-info .position {
+        color: #3498db;
+        font-weight: 500;
+        margin-bottom: 3px;
+        font-size: 0.9em;
+      }
+
+      .education-date {
+        color: #7f8c8d;
+        font-size: 0.85em;
+        white-space: nowrap;
+        min-width: 120px;
+        text-align: right;
+      }
+
+      /* Skills */
+      .skills-grid {
+        display: block;
+      }
+
+      .skill-category {
+        margin-bottom: 8px;
+        padding: 5px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .skill-category:last-child {
+        border-bottom: none;
+      }
+
+      .skill-category h3 {
+        color: #2c3e50;
+        margin-bottom: 5px;
+        font-size: 0.9em;
+        display: inline-block;
+        background-color: #f0f8ff;
+        padding: 1px 6px;
+        border-radius: 3px;
+      }
+
+      .skill-category .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-left: 2px;
+      }
+
+      .skill-category .skill-tag {
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 0.8em;
+      }
+
+      /* Awards */
+      .awards-list {
+        list-style-type: none;
+      }
+
+      .awards-list > li {
+        margin-bottom: 18px;
+        padding-left: 15px;
+        position: relative;
+        page-break-inside: avoid;
+      }
+
+      .awards-list > li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 3px;
+        bottom: 3px;
+        width: 3px;
+        background-color: #3498db;
+        border-radius: 2px;
+      }
+
+      .award-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3px;
+        page-break-inside: avoid;
+      }
+
+      .award-title {
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 0.95em;
+        flex: 1;
+      }
+
+      .award-info {
+        color: #7f8c8d;
+        font-size: 0.85em;
+        white-space: nowrap;
+        /* margin-left: 10px; */
+      }
+
+      /* Work highlights fix */
+      .awards-list .work-highlights {
+        list-style-type: none;
+        margin-left: 0;
+      }
+
+      .awards-list .work-highlights li {
+        margin-bottom: 5px;
+        padding-left: 20px;
+        position: relative;
+        color: #555;
+        font-size: 0.9em;
+      }
+
+      .awards-list .work-highlights li::before {
+        content: "•";
+        color: #3498db;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: none;
+        width: auto;
+        height: auto;
+      }
+
+      /* Footer */
+      .footer {
+        padding: 20px 40px;
+        text-align: center;
+        color: #7f8c8d;
+        font-size: 0.9em;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          margin: 0;
+          box-shadow: none;
+        }
+
+        .header,
+        .section,
+        .profile {
+          padding: 20px;
+        }
+
+        .header .contact-info {
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .work-item .work-header,
+        .education-header {
+          flex-direction: column;
+          gap: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-content">
+          <h1>莫盛杰</h1>
+          <div class="title">开发运维 | 大数据平台 | 测试开发 | 全栈</div>
+          <div class="contact-info">
+            <div>住址/户籍/工作地点: 浙江-杭州</div>
+            <div>出生年月: 1999.08</div>
+            <div>邮箱: kako_hanekawa@foxmail.com</div>
+            <div>电话: +86 13588742119</div>
+            <div>微信: 13588742119</div>
+            <div>QQ: 515442550</div>
+            <div>网站: https://hanekawa.dpdns.org (未装修)</div>
+            <div>GitHub: WanderAtDusk6</div>
+
+            <div>
+              &gt;(已遵守企业信息安全规范)提及的项目笔记,图片证明,可在此查看:
+              https://github.com/WanderAtDusk6/resume_v2/
+            </div>
+          </div>
+        </div>
+        <div class="header-images">
+          <div class="header-image">
+            <!-- <span>个人头像</span> -->
+            <img src="images/my_profile.jpg" alt="个人头像" />
+          </div>
+          <div class="header-image">
+            <span>微信二维码<br />(算了不加了)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="profile">
+        <h2>个人简介</h2>
+        <p>
+          5年开发经验(2年开发运维+2.5年测试开发),云原生DevOps实践经验,
+          数据治理经验.
+        </p>
+        <p>
+          担责于身,履责于行.能稳定按预期时间交付任务, 对于潜在风险,
+          也会及时沟通,预警,持续跟进并做出调整.
+        </p>
+        <p>
+          我会始终保持对前沿技术的好奇,探索与热情,也能结合实际情况,良好协作并切实的解决问题.于我而言,接触技术、理论、产品的同时,也是对世界认知的扩展,高山仰止,景行行止.
+        </p>
+      </div>
+
+      <!-- Work Experience -->
+      <div class="section">
+        <h2>工作经验</h2>
+        <ul class="awards-list">
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">浙大网新恒天 | (派驻至)美国道富银行</div>
+              <div class="award-info">2023-11 至 2025-12</div>
+            </div>
+            <div
+              class="work-info"
+              style="
+                margin: 2px 0 5px 0;
+                color: #3498db;
+                font-weight: 500;
+                font-size: 0.9em;
+              "
+            >
+              云平台-开发运维工程师
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.9em; margin-bottom: 8px"
+            >
+              作为 DevOps 工程师,在 AWS 上构建与开发企业级 CI/CD
+              平台,通过团队自定义的声明式配置格式(IaC)驱动自动化部署,管理多环境(dev/uat/prod)的
+              AWS 资源；将 Databricks(统一数据分析与AI平台) 的特性功能集成至
+              CI/CD
+              流水线,结合环境隔离的权限控制,实现易用、安全可追溯的自动化交付流程.
+            </div>
+            <ul class="work-highlights" style="margin-left: 10px">
+              <li>
+                业务范围: 企业级 CI/CD 平台, 个人负责范围聚焦于数据+AI+安全合规,
+                是CICD databricks部分的主要开发人员
+              </li>
+              <li>
+                技术易用性与推广: 公司CICD databricks 参考示例,
+                约50%由我编写,供应用与数据科学团队在 CI/CD pipeline中参考使用
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">诺基亚通信系统技术(北京)有限公司</div>
+              <div class="award-info">2021-07 至 2023-08</div>
+            </div>
+            <div
+              class="work-info"
+              style="
+                margin: 2px 0 5px 0;
+                color: #3498db;
+                font-weight: 500;
+                font-size: 0.9em;
+              "
+            >
+              测试开发工程师
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.9em; margin-bottom: 8px"
+            >
+              作为测试开发工程师,参与开发与维护公司自研自动化测试框架(Agent 5G
+              All in
+              Cloud),实现测试环境一键部署、软硬件适配及日志收集分析等功能;将创新idea落地的测试工具开发,并跨部门协作开发部分可演示原型,保障集群环境稳定,排查测试问题等.
+            </div>
+            <ul class="work-highlights" style="margin-left: 10px">
+              <li>
+                职责范围: 维护自动化测试框架, 简化测试环境部署, 软硬件适配
+              </li>
+              <li>技术创新: 开发的测试工具获得公司级年度表彰</li>
+            </ul>
+          </li>
+
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">诺基亚通信系统技术(北京)有限公司</div>
+              <div class="award-info">2020-11 至 2021-06</div>
+            </div>
+            <div
+              class="work-info"
+              style="
+                margin: 2px 0 5px 0;
+                color: #3498db;
+                font-weight: 500;
+                font-size: 0.9em;
+              "
+            >
+              Python开发实习生
+            </div>
+            <ul class="work-highlights" style="margin-left: 10px">
+              <!-- <li>熟悉软件交付规范,熟悉测试,敏捷开发</li> -->
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- Skills -->
+      <div class="section">
+        <h2>技能</h2>
+        <div
+          class="legend"
+          style="
+            margin-bottom: 10px;
+            padding: 6px 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              gap: 12px;
+              flex-wrap: wrap;
+              font-size: 0.8em;
+              margin-left: 5px;
+            "
+          >
+            图例说明:
+            <span>🔵 精通&gt;</span>
+            <span>🟢 熟悉&gt;</span>
+            <span>🟡 掌握&gt;</span>
+            <span>⚪ 入门</span>
+          </div>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>编程语言</h3>
+            <div class="skills">
+              <span class="skill-tag">🔵Python</span>
+              <span class="skill-tag">🟢Javascript/TS</span>
+              <span class="skill-tag">🟢SQL</span>
+              <span class="skill-tag">🟡Shell</span>
+              <span class="skill-tag">🟡C</span>
+              <span class="skill-tag">⚪Java</span>
+              <span class="skill-tag">⚪Matlab</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>DevOps & CI/CD</h3>
+            <div class="skills">
+              <span class="skill-tag">🟡GitHub Actions/GitLab</span>
+              <span class="skill-tag">🟢Jenkins</span>
+              <span class="skill-tag">🟢Ansible</span>
+              <span class="skill-tag">🟢Docker</span>
+              <span class="skill-tag">🟢IaaS</span>
+              <span class="skill-tag">🟢Pipeline Devlop</span>
+              <span class="skill-tag">⚪Code Scan</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>数据库</h3>
+            <div class="skills">
+              <span class="skill-tag">所有数据库均能快速学习使用</span>
+              <span class="skill-tag">🟡数据湖仓型</span>
+              <span class="skill-tag">🟢关系型(RDBMS)</span>
+              <span class="skill-tag">🟢文档型</span>
+              <span class="skill-tag">⚪向量数据型</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>云服务</h3>
+            <div class="skills">
+              <span class="skill-tag">🟢AWS</span>
+              <span class="skill-tag">⚪阿里云</span>
+              <span class="skill-tag">🟡Serverless</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>容器技术</h3>
+            <div class="skills">
+              <span class="skill-tag">🟢Docker</span>
+              <span class="skill-tag">⚪Kubernetes</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>前端技术</h3>
+            <div class="skills">
+              <span class="skill-tag">🟡HTML5/CSS3</span>
+              <span class="skill-tag">🟢Vue3</span>
+              <span class="skill-tag">🟢Nuxt/⚪Next</span>
+              <span class="skill-tag">⚪Node.js</span>
+              <span class="skill-tag">⚪React</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>AI应用相关</h3>
+            <div class="skills">
+              <span class="skill-tag">🟢PyTorch</span>
+              <span class="skill-tag">🟡Langchain</span>
+              <span class="skill-tag">🟢Prompt/🟡Workflow/⚪Agent</span>
+              <span class="skill-tag">🟡coze/n8n</span>
+              <span class="skill-tag">⚪SD/ComfyUI</span>
+              <span class="skill-tag">ML整体基础扎实,认知清晰</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>大数据</h3>
+            <div class="skills">
+              <span class="skill-tag">🟡Spark</span>
+              <span class="skill-tag">🟢Databricks</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>自动化测试</h3>
+            <div class="skills">
+              <span class="skill-tag">🟡Pytest/Unittest</span>
+              <span class="skill-tag">🟡Robot Framework</span>
+              <span class="skill-tag">🟢Selenium</span>
+              <span class="skill-tag">⚪Playwright</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>Web框架</h3>
+            <div class="skills">
+              <span class="skill-tag">🟡Django/FastApi/⚪Flask</span>
+              <span class="skill-tag">⚪Go/Gin</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3>其他</h3>
+            <div class="skills">
+              <span class="skill-tag">🟢技术文档/demo编写</span>
+              <span class="skill-tag">🟢运维问题排查</span>
+              <span class="skill-tag">🟡Linux</span>
+              <span class="skill-tag">🟢Jira</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Projects -->
+      <div class="section">
+        <h2>项目经历</h2>
+        <div class="work-item">
+          <div class="work-header">
+            <div class="work-info">
+              <h3>Databricks平台与CICD Pipeline集成</h3>
+            </div>
+          </div>
+          <div class="work-summary">
+            <p>
+              - 相关介绍: Databricks 大数据/AI平台,是Apache
+              Spark创始团队对其的商业优化版,是Lakehouse架构, Delta Lake, MLflow,
+              大规模机器学习和高级数据工程等领域的开创者或重要参与者.现估值1400亿美元(约等于阿里云估值)
+            </p>
+            <p>
+              - 开发内容: 企业内CICD Pipeline,
+              使用自定义配置文件(.grd)进行AWS资源部署,
+              后因对databricks新功能支持需求较多,CICD databricks模块单独拆出,
+              开发方面,由团队架构师与我负责开发维护.以下为开发的功能:
+            </p>
+            <p>
+              [- 其他说明: 说实话, 调用sdk二次开发这本身并不算难.
+              这段经历的成长点主要在于, 学习了围绕数据的治理体系(云+湖上建仓),
+              非常有启发意义, 也欢迎向我提问感兴趣的内容,
+              或指一段DBS或其他数据平台的功能, 让我谈谈对其的理解.]
+            </p>
+          </div>
+          <ul class="work-highlights">
+            <li>
+              数据向: 跨域数据目录(Foreign Catalog); 数据质量监控(monitor data
+              quality); 外部数据安全访问控制(external data access);
+              基于属性的细粒度权限管理(ABAC)等
+            </li>
+            <li>
+              计算向: 多种类cluster模板(如GPU cluster适配,
+              标准cluster,组专用cluster等); SQL warehouse(endpoint); instance
+              pool; runtime与公司内部image service等
+            </li>
+            <li>
+              安全权限向: 角色权限设计(user/group/SP); 多环境fine-grained access
+              control; SP token/OAuth secret等
+            </li>
+            <li>微服务: secret即时权限操作(AWS secret+DBS资源+前端同步)等</li>
+            <li>
+              极简脚本部署服务: sql/notebook自动以用户所属组default
+              SP权限,代执行代码
+            </li>
+            <li>
+              平台数据迁移: 因login条例修改, 迁移all user workspace数据至SSO
+              user workspace下
+            </li>
+            <li>
+              技术栈: Github action=>Jenkins=>AWS
+              Cloudformation=>Ansible=>Databricks=>AWS Resources deploy
+            </li>
+          </ul>
+        </div>
+        <div class="work-item">
+          <div class="work-header">
+            <div class="work-info">
+              <h3>自动化测试项目开发与维护</h3>
+            </div>
+          </div>
+          <div class="work-summary">
+            通信领域Cloud RAN架构中,企业内部测试环境的准备与自动化测试用例执行,
+          </div>
+          <ul class="work-highlights">
+            <li>
+              负责内容:相关功能模块开发与维护,软硬件环境变化适配,文档维护,问题协助排查与解决
+            </li>
+            <li>技术: python,shell,paramiko,robot framework</li>
+          </ul>
+        </div>
+        <div class="work-item">
+          <div class="work-header">
+            <div class="work-info">
+              <h3>测试用例错误原因自动分类</h3>
+            </div>
+          </div>
+          <div class="work-summary">
+            改进原有测试程序日志收集模块,收集错误栈信息,建立错误log数据集,与测试人员协助完成初版人工标注,完善收集-分析-再推送结果链路
+          </div>
+          <ul class="work-highlights">
+            <li>
+              主要参与部分: 数据集设计与建立,
+              开发与跑通数据收集-初版算法分类-结果推送流程,
+              及后续日志数据的聚合与可视化
+            </li>
+            <li>管理端汇总报表网页汇总,个人端分类结果邮件分发</li>
+            <li>效果:分类正确率≈90%(验证集上)</li>
+            <li>技术: sklearn,pytorch,grequests,pyecharts,mongodb</li>
+          </ul>
+        </div>
+        <div class="work-item">
+          <div class="work-header">
+            <div class="work-info">
+              <h3>某通信模块内部消息流程可视化-前端部分</h3>
+            </div>
+          </div>
+          <div class="work-summary">
+            某模块依照一份繁杂的信令流程规范图设计,因流程复杂+运行时产生log文件层次也复杂+测试人员排查问题不方便+解决经验文档零散,
+            编写log解析脚本+拆解原大信令图后+整理解决经验文档, 辅以前端可视化,
+            提高对此模块的问题排查效率
+          </div>
+          <ul class="work-highlights">
+            <li>
+              负责内容: 前端ui,交互逻辑控制和效果的实现;
+              环节局部信令流程图状态样式呈现;
+              异常消息的解决方案栏的增删改查功能(便于集中解决经验文档)
+            </li>
+            <li>
+              技术栈: vue, pinia, Vue Router,(其他相关的: elasticsearch,
+              logstash, kibana, mysql)
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Languages -->
+      <!-- <div class="section">
+        <h2>语言技能</h2>
+        <div class="skills">
+          <span class="skill-tag">中文 (母语)</span>
+          <span class="skill-tag">英语 (六级)</span>
+        </div>
+      </div> -->
+
+      <!-- Education -->
+      <div class="section">
+        <h2>教育背景</h2>
+        <ul class="awards-list">
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">
+                浙江科技大学
+                <span
+                  style="
+                    color: #3498db;
+                    font-weight: 500;
+                    font-size: 0.85em;
+                    margin-left: 10px;
+                  "
+                  >本科</span
+                >
+              </div>
+              <div class="award-info">2017-09 至 2021-06</div>
+            </div>
+            <div
+              class="work-info"
+              style="
+                margin: 2px 0 5px 0;
+                color: #3498db;
+                font-weight: 500;
+                font-size: 0.9em;
+              "
+            >
+              材料成型及控制工程 (自学转IT)
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.9em; margin-bottom: 5px"
+            >
+              四年专业绩点排名均前30%, 其中一年综测排名专业第一
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.9em; margin-bottom: 5px"
+            >
+              (非科班,但校内选修过IT相关课程,在这列出):
+              人工智能创新特色班、数学建模特色班、acm选修课、c语言必修课、java工程师实训班(这个水过去的,算会也不算会)
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Awards -->
+      <div class="section">
+        <h2>荣誉奖项</h2>
+        <ul class="awards-list">
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">前20%绩效</div>
+              <div class="award-info">浙大网新恒天 | 2025</div>
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.85em; margin-top: 2px"
+            >
+              #年度 #部门级 绩效271划分, 拿了2.
+              <!-- <img src="images/awards/insigma_performance.jpg" /> -->
+              (但这个忘记截图了)
+            </div>
+          </li>
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">诺基亚杭州研发中心-第三届蓝鼎奖</div>
+              <div class="award-info">诺基亚 | 2023</div>
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.85em; margin-top: 2px"
+            >
+              #公司级 #年度 Best ideas of Innovation. 发给大部门(NSB MN RAN Pz 2
+              HAZ)的, 然后没人要就放我这了...
+              <!-- <img src="images/awards/nokia_ino_idea_langding3.jpg" /> -->
+            </div>
+          </li>
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">
+                诺基亚(杭州)测试协会-2022年度Top3最佳测试工具奖
+              </div>
+              <div class="award-info">诺基亚 | 2022</div>
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.85em; margin-top: 2px"
+            >
+              #年度
+              <!-- <img src="images/awards/nokia_award_mix3.jpg" /> -->
+            </div>
+          </li>
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">自动化测试重要贡献者 | 最佳创意奖</div>
+              <div class="award-info">诺基亚 | 2022</div>
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.85em; margin-top: 2px"
+            >
+              #部门级 #季度
+              <!-- <img src="images/awards/nokia_award_mix3.jpg" /> -->
+            </div>
+          </li>
+          <!-- 
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">
+                四年专业绩点排名均前30%, 其中一年综测排名专业第一
+              </div>
+              <div class="award-info">浙江科技大学 | 2021</div>
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.85em; margin-top: 2px"
+            >
+              #学校
+            </div>
+          </li> 
+          -->
+          <li>
+            <div class="award-item-header">
+              <div class="award-title">
+                竞赛获奖: 数学建模二 | 计算机设计三 | 高数
+              </div>
+              <div class="award-info">浙江科技大学 | 2021</div>
+            </div>
+            <div
+              class="work-summary"
+              style="font-size: 0.85em; margin-top: 2px"
+            >
+              #校级 PS: 全校级没啥含金量,纯凑点学校方面的字数
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Certificates -->
+      <div class="section">
+        <h2>证书</h2>
+        <ul class="awards-list">
+          <li>
+            <div class="award-title">大学英语六级考试(CET-6)</div>
+            <div class="award-info">教育部 | 2018</div>
+          </li>
+        </ul>
+      </div>
+      <!-- Interests -->
+      <!-- <div class="section">
+        <h2>兴趣爱好</h2>
+        <div class="skills">
+          <span class="skill-tag">旮旯game高手</span>
+          <span class="skill-tag">哈基米音乐鉴赏家</span>
+        </div>
+      </div> -->
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>
+          © 2025 莫盛杰 | PUA to TraeAI | 临时简历,适用时间范围: 2026.01.01~15
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
