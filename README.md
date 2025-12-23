@@ -1,5 +1,11 @@
 # resume_v2
 
+## web preview
+
+TODO: gemini3 publish to vercel:
+
+https://aistudio.google.com/apps/drive/1UI_nSTjwgWlm69LTx6yr3OnQJk4XanSP?showAssistant=true&showPreview=true&resourceKey=
+
 ## 文件导出规范
 
 名称：`{目标岗位}_{姓名}_{工作经验年数}_{工作单位}_{学历}.pdf`

@@ -7,7 +7,7 @@
     "email": "kako_hanekawa@foxmail.com",
     "phone": "+86 13588742119",
     "url": "https://hanekawa.dpdns.org",
-    "summary": "5年开发经验()",
+    "summary": "5年开发经验(2年开发运维+2.5年测试开发),云原生DevOps实践经验,我会始终保持对前沿技术的好奇,探索与热情,也能结合实际情况,良好协作并切实的解决问题.接触技术、理论、产品的同时,也是对世界认知的扩展,高山仰止,景行行止",
     "location": {
       "address": "钱塘区保利东湾",
       "city": "杭州市",
@@ -28,8 +28,7 @@
       },
       {
         "network": "QQ",
-        "username": "......",
-        "_description": "515442550"
+        "username": "515442550"
       }
     ]
   },
@@ -40,7 +39,7 @@
       "url": "https://www.insigma.com.cn/",
       "startDate": "2023-11",
       "endDate": "2025-12",
-      "summary": "作为 DevOps 工程师,在 AWS 上构建与开发企业级 CI/CD 平台,通过团队自定义的声明式配置格式(IaC)驱动自动化部署,管理多环境(dev/uat/prod)的 AWS 资源；将 Databricks(统一数据分析与AI平台)的 特性功能集成至 CI/CD 流水线,结合环境隔离的权限控制,实现易用、安全可追溯的自动化交付流程.",
+      "summary": "作为 DevOps 工程师,在 AWS 上构建与开发企业级 CI/CD 平台,通过团队自定义的声明式配置格式(IaC)驱动自动化部署,管理多环境(dev/uat/prod)的 AWS 资源；将 Databricks(统一数据分析与AI平台) 的特性功能集成至 CI/CD 流水线,结合环境隔离的权限控制,实现易用、安全可追溯的自动化交付流程.",
       "highlights": [
         "业务范围: 企业级 CI/CD 平台, 个人负责范围聚焦于数据+AI+安全合规",
         "技术易用性与推广: 公司CICD databricks 参考示例, 约50%由我编写,供应用与数据科学团队在 CI/CD 中参考使用",
@@ -159,7 +158,8 @@
         "🟢Ansible",
         "🟢Docker",
         "🟢IaaS",
-        "🟢Pipeline设计"
+        "🟢Pipeline Devlop",
+        "⚪Code Scan"
       ]
     },
     {
@@ -195,7 +195,8 @@
       "keywords": [
         "🟢PyTorch",
         "🟡Langchain",
-        "⚪coze/n8n",
+        "🟢Prompt/⚪Workflow/⚪Agent",
+        "🟡coze/n8n",
         "⚪SD/ComfyUI",
         "ML整体基础扎实,认知清晰"
       ]
@@ -234,18 +235,60 @@
   ],
   "interests": [
     {
-      "name": "Wildlife",
-      "keywords": ["Ferrets", "Unicorns"]
+      "name": "...",
+      "keywords": ["旮旯game高手", "哈基米音乐鉴赏家"]
     }
   ],
   "projects": [
+    // {
+    //   "name": "Project",
+    //   "startDate": "2019-01-01",
+    //   "endDate": "2021-01-01",
+    //   "description": "Description  ",
+    //   "highlights": ["Won award at AIHacks 2016"],
+    //   "url": "https://project.com/"
+    // },
+    //
     {
-      "name": "Project",
-      "startDate": "2019-01-01",
-      "endDate": "2021-01-01",
-      "description": "Description  ",
-      "highlights": ["Won award at AIHacks 2016"],
-      "url": "https://project.com/"
+      "name": "Databricks平台与CICD Pipeline集成",
+      "description": "背景补充: Databricks 大数据/AI平台,是Apache Spark创始团队对其的商业优化版,是Lakehouse架构, Delta Lake, MLflow, 大规模机器学习和高级数据工程等领域的开创者或重要参与者. 企业内CICD Pipeline, 使用自定义配置文件(.grd)进行AWS资源部署, 后因企业内部对databricks新功能支持需求较多,CICD databricks模块单独拆出, 开发方面,由团队架构师与我负责开发维护",
+      "highlights": [
+        "数据向: foreign catalog; monitor data quality; external data access; attribute-based access control等",
+        "计算向: 多种类cluster模板; instance pool; runtime接入公司内部image service等",
+        "安全权限向: auth; multi env fine-grained access control; SP token/ OAuth secret等",
+        "微服务: secret即时权限操作(AWS secret+DBS资源+前端同步）等",
+        "极简脚本部署服务: sql/notebook自动以用户所属组default SP权限,代执行代码",
+        "平台数据迁移: 因login条例修改, 迁移all user workspace数据至SSO user workspace下",
+        "项目开发相关: 遵循架构要求, 重构原SDK; 新功能支持与权限范围设计; enterprise account level log再分配至Elasticsearch和对应用户组",
+        "技术栈: Github action=>Jenkins=>AWS Cloudformation=>Ansible=>Databricks=>AWS Resources deploy"
+      ],
+      "url": "https://www.databricks.com/"
+    },
+    {
+      "name": "自动化测试项目开发与维护",
+      "description": "通信领域Cloud RAN架构中,企业内部测试环境的准备与自动化测试用例执行,",
+      "highlights": [
+        "负责内容:相关功能模块开发与维护,软硬件环境变化适配,文档维护,问题协助排查与解决",
+        "技术: python,shell,paramiko,robot framework"
+      ]
+    },
+    {
+      "name": "测试用例错误原因自动分类",
+      "description": "改进原有测试程序日志收集模块,收集错误栈信息,建立错误log数据集,与测试人员协助完成初版人工标注,完善收集-分析-再推送结果链路",
+      "highlights": [
+        "主要参与部分: 数据集设计与建立, 开发与跑通数据收集-初版算法分类-结果推送流程, 及后续日志数据的聚合与可视化",
+        "管理端汇总报表网页汇总，个人端分类结果邮件分发",
+        "效果:分类正确率≈90%(验证集上)",
+        "技术: sklearn,pytorch,grequests,pyecharts,mongodb"
+      ]
+    },
+    {
+      "name": "某通信模块内部消息流程可视化-前端部分",
+      "description": "某模块依照一份繁杂的信令流程规范图设计,因流程复杂+运行时产生log文件层次也复杂+测试人员排查问题不方便+解决经验文档零散, 编写log解析脚本+拆解原大信令图后+整理解决经验文档, 辅以前端可视化, 提高对此模块的问题排查效率",
+      "highlights": [
+        "负责内容: 前端ui,交互逻辑控制和效果的实现; 环节局部信令流程图状态样式呈现; 异常消息的解决方案栏的增删改查功能(便于集中解决经验文档)",
+        "技术栈: vue, pinia, Vue Router,(其他相关的: elasticsearch, logstash, kibana, mysql)"
+      ]
     }
   ]
 }
