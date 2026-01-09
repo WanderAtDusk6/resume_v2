@@ -2,8 +2,13 @@
 
 ## web preview
 
-TODO: gemini3 publish to vercel:
+### GitHub Pages
 
+preview: <https://wanderatdusk6.github.io/resume_v2/>
+
+### 其他预览 chat+RAG
+
+TODO:
 https://aistudio.google.com/apps/drive/1UI_nSTjwgWlm69LTx6yr3OnQJk4XanSP?showAssistant=true&showPreview=true&resourceKey=
 
 ## 文件导出规范
