@@ -1,0 +1,1767 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Communication Assistant</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .animate-in {
+        animation: fadeIn 0.2s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Utility for outline indentation lines */
+      .tree-line {
+        border-left: 1px solid #e2e8f0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "react/": "https://esm.sh/react@^19.2.3/",
+          "react": "https://esm.sh/react@^19.2.3",
+          "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body
+    class="bg-slate-100 font-sans text-slate-800 h-screen flex flex-col overflow-hidden"
+  >
+    <!-- Compatibility: Hidden Root for legacy React mounters -->
+    <div id="root" style="display: none"></div>
+
+    <!-- Header -->
+    <header
+      class="bg-white border-b border-slate-200 px-4 py-3 md:px-6 flex flex-wrap md:flex-nowrap items-center gap-3 shadow-sm z-10 shrink-0"
+    >
+      <div class="p-2 bg-indigo-600 rounded-lg text-white shrink-0">
+        <i data-lucide="layout" width="20" height="20"></i>
+      </div>
+      <div class="flex-1 min-w-[200px]">
+        <h1
+          class="font-bold text-lg md:text-xl text-slate-800 tracking-tight truncate"
+        >
+          Communication Assistant
+        </h1>
+        <p class="text-[10px] md:text-xs text-slate-500 truncate">
+          讲述者助手 v3.1 (PUA to gemini3, nonsense series ©tsubasa_studio)
+        </p>
+      </div>
+      <div class="flex items-center gap-2 ml-auto mt-2 md:mt-0">
+        <input type="file" id="fileInput" class="hidden" accept=".json" />
+        <button
+          onclick="Handlers.triggerImport()"
+          class="flex items-center gap-1.5 px-3 py-1.5 text-xs md:text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors border border-transparent hover:border-indigo-100"
+        >
+          <i data-lucide="upload" width="16" height="16"></i>
+          <span class="hidden sm:inline">导入</span>
+        </button>
+        <button
+          onclick="Handlers.exportData()"
+          class="flex items-center gap-1.5 px-3 py-1.5 text-xs md:text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors border border-transparent hover:border-indigo-100"
+        >
+          <i data-lucide="download" width="16" height="16"></i>
+          <span class="hidden sm:inline">导出</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main
+      class="flex-1 p-2 md:p-4 flex flex-col md:grid md:grid-cols-12 gap-4 h-auto md:h-full overflow-y-auto md:overflow-hidden"
+    >
+      <!-- Strategy Column (Left Desktop / Bottom Mobile) -->
+      <aside
+        class="order-3 md:order-1 col-span-12 md:col-span-3 flex flex-col h-[500px] md:h-full overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm"
+      >
+        <div
+          class="px-4 py-3 border-b border-slate-100 flex items-center gap-2 bg-sky-50 text-sky-700"
+        >
+          <i data-lucide="compass" width="16" height="16"></i>
+          <h3 class="font-bold text-sm uppercase tracking-wide opacity-90">
+            回答策略库 (Strategy)
+          </h3>
+        </div>
+        <div class="flex flex-col h-full overflow-hidden">
+          <div
+            id="strategy-list"
+            class="flex-1 overflow-y-auto p-3 space-y-2"
+          ></div>
+          <!-- Methodology Panel -->
+          <div
+            id="methodology-panel"
+            class="h-64 md:h-80 border-t border-sky-100 bg-white p-3 flex flex-col transition-opacity duration-200"
+          >
+            <!-- Content injected via JS -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Context Stream (Center Desktop / Top Mobile) -->
+      <section
+        class="order-1 md:order-2 col-span-12 md:col-span-6 flex flex-col gap-4 h-[650px] md:h-full overflow-hidden"
+      >
+        <!-- Outline -->
+        <div
+          class="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden"
+        >
+          <div
+            class="p-3 md:p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center"
+          >
+            <h2
+              class="font-bold text-slate-700 uppercase tracking-wide text-sm"
+            >
+              正文大纲 (Context Stream)
+            </h2>
+          </div>
+          <div
+            class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar relative"
+          >
+            <!-- Legend -->
+            <div
+              class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 mb-4 px-3 py-2 bg-slate-50 rounded border border-slate-100 select-none"
+            >
+              <span class="font-bold mr-1 text-slate-700">状态:</span>
+              <span class="flex items-center gap-1"
+                ><i data-lucide="circle" width="12" class="text-slate-300"></i>
+                待述</span
+              >
+              <span class="flex items-center gap-1"
+                ><i
+                  data-lucide="play"
+                  width="12"
+                  class="text-blue-600 fill-blue-600"
+                ></i>
+                焦点</span
+              >
+              <span class="flex items-center gap-1"
+                ><i data-lucide="target" width="12" class="text-amber-500"></i>
+                对齐</span
+              >
+              <span class="flex items-center gap-1"
+                ><i
+                  data-lucide="check-circle-2"
+                  width="12"
+                  class="text-emerald-500"
+                ></i>
+                完成</span
+              >
+            </div>
+            <div id="outline-tree" class="flex flex-col gap-1 pb-10"></div>
+            <div
+              class="mt-8 pt-8 border-t border-dashed border-slate-200 text-center text-slate-400 text-sm"
+            >
+              -- End of Outline --
+            </div>
+          </div>
+        </div>
+        <!-- Scratchpad -->
+        <div
+          class="flex-none bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden"
+        >
+          <div
+            class="px-3 py-2 bg-slate-50 border-b border-slate-100 flex justify-between items-center"
+          >
+            <div
+              class="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-wider"
+            >
+              <i data-lucide="type" width="14"></i> 临时板书 (Scratchpad)
+            </div>
+            <button
+              onclick="Handlers.extractScratchpad()"
+              class="flex items-center gap-1 text-[10px] bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-2 py-1 rounded border border-indigo-100 transition-colors"
+            >
+              <i data-lucide="arrow-right-from-line" width="12"></i> 提取至记忆
+            </button>
+          </div>
+          <textarea
+            id="scratchpad-input"
+            class="w-full h-24 p-3 text-sm text-slate-700 resize-none focus:outline-none bg-slate-50/30 font-mono"
+            placeholder="在此输入临时解释、绘图或草稿... 选中文字可提取为关键词"
+          ></textarea>
+        </div>
+      </section>
+
+      <!-- Right Column (Right Desktop / Middle Mobile) -->
+      <aside
+        class="order-2 md:order-3 col-span-12 md:col-span-3 flex flex-col gap-4 h-[600px] md:h-full overflow-hidden"
+      >
+        <!-- Memo Board -->
+        <div
+          class="flex-1 min-h-0 bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden relative"
+        >
+          <div
+            id="memo-header"
+            class="p-4 border-b flex justify-between items-center bg-slate-50"
+          >
+            <!-- Injected via JS -->
+          </div>
+          <div
+            id="memo-list"
+            class="flex-1 overflow-y-auto p-4 space-y-3 relative"
+          >
+            <!-- Injected via JS -->
+          </div>
+          <!-- Compression Overlay (Hidden by default) -->
+          <div
+            id="compression-modal"
+            class="hidden absolute inset-0 bg-white/95 backdrop-blur-sm z-20 flex-col justify-center items-center p-6 animate-in"
+          >
+            <div
+              class="w-full max-w-sm bg-white p-6 rounded-xl shadow-2xl border border-indigo-100"
+            >
+              <h4 class="text-lg font-bold text-slate-800 mb-2">压缩归纳</h4>
+              <p class="text-sm text-slate-500 mb-4">归纳选中的碎片信息：</p>
+              <input
+                id="compression-input"
+                type="text"
+                class="w-full p-3 border border-slate-300 rounded-lg mb-4 focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium"
+              />
+              <div class="flex justify-end gap-2">
+                <button
+                  onclick="Handlers.cancelCompress()"
+                  class="px-3 py-2 text-slate-500 hover:bg-slate-100 rounded-lg text-sm font-medium"
+                >
+                  取消
+                </button>
+                <button
+                  onclick="Handlers.confirmCompress()"
+                  class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold shadow-md"
+                >
+                  确认
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preferences -->
+        <div
+          class="h-auto shrink-0 bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col shadow-sm"
+        >
+          <div
+            class="px-4 py-3 border-b border-slate-100 flex items-center justify-between bg-amber-50 text-amber-700"
+          >
+            <div class="flex items-center gap-2">
+              <i data-lucide="heart" width="16"></i>
+              <h3 class="font-bold text-sm uppercase tracking-wide opacity-90">
+                听众偏好
+              </h3>
+            </div>
+            <span
+              class="text-[10px] bg-black/10 px-1.5 py-0.5 rounded text-current font-mono opacity-70"
+              >[AI Backend]</span
+            >
+          </div>
+          <div class="p-3">
+            <div id="preference-list" class="flex flex-col gap-2"></div>
+            <button
+              onclick="Handlers.addPreferencePrompt()"
+              class="mt-2 w-full flex items-center justify-center gap-1 p-2 rounded-lg border border-dashed border-slate-300 text-slate-400 text-xs hover:border-amber-300 hover:text-amber-600 transition-colors"
+            >
+              <i data-lucide="plus" width="14"></i> 添加新偏好
+            </button>
+          </div>
+        </div>
+
+        <!-- Alignment -->
+        <div
+          class="h-auto shrink-0 bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col shadow-sm"
+        >
+          <div
+            class="px-4 py-3 border-b border-slate-100 flex items-center justify-between bg-emerald-50 text-emerald-700"
+          >
+            <div class="flex items-center gap-2">
+              <i data-lucide="target" width="16"></i>
+              <h3 class="font-bold text-sm uppercase tracking-wide opacity-90">
+                理解对齐
+              </h3>
+            </div>
+            <span
+              class="text-[10px] bg-black/10 px-1.5 py-0.5 rounded text-current font-mono opacity-70"
+              >[AI Backend]</span
+            >
+          </div>
+          <div id="alignment-panel" class="p-3 text-center"></div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Context Menu (Absolute Position) -->
+    <div
+      id="context-menu"
+      class="hidden fixed z-50 bg-white border border-slate-200 shadow-xl rounded-lg py-1 w-40 flex-col animate-in"
+    >
+      <div
+        class="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider"
+      >
+        Set Status
+      </div>
+      <button
+        onclick="Handlers.setNodeStatus('pending')"
+        class="text-left px-4 py-2 hover:bg-slate-50 text-slate-600 text-sm flex items-center gap-2"
+      >
+        <i data-lucide="circle" width="14"></i> 重置
+      </button>
+      <button
+        onclick="Handlers.setNodeStatus('current')"
+        class="text-left px-4 py-2 hover:bg-blue-50 text-blue-600 text-sm flex items-center gap-2"
+      >
+        <i data-lucide="play" width="14"></i> 焦点
+      </button>
+      <button
+        onclick="Handlers.setNodeStatus('alignment')"
+        class="text-left px-4 py-2 hover:bg-amber-50 text-amber-600 text-sm flex items-center gap-2"
+      >
+        <i data-lucide="target" width="14"></i> 对齐
+      </button>
+      <div class="h-px bg-slate-100 my-1"></div>
+      <button
+        onclick="Handlers.setNodeStatus('done')"
+        class="text-left px-4 py-2 hover:bg-emerald-50 text-emerald-600 text-sm flex items-center gap-2"
+      >
+        <i data-lucide="check-circle-2" width="14"></i> 完成
+      </button>
+      <button
+        onclick="Handlers.setNodeStatus('skipped')"
+        class="text-left px-4 py-2 hover:bg-slate-50 text-slate-400 text-sm flex items-center gap-2"
+      >
+        <i data-lucide="ban" width="14"></i> 跳过
+      </button>
+    </div>
+
+    <script>
+      /**
+       * ==========================================
+       * DATA LAYER (data.json simulator)
+       * ==========================================
+       */
+      const INITIAL_DATA = {
+        outline: [
+          {
+            id: "sec-0",
+            label: "0.共识",
+            status: "pending",
+            type: "section",
+            children: [
+              {
+                id: "k-0-1",
+                label: "行业/领域基础知识的掌握",
+                status: "pending",
+                type: "keypoint",
+              },
+              {
+                id: "k-0-2",
+                label: "问题的分析与解决",
+                status: "pending",
+                type: "keypoint",
+              },
+              {
+                id: "k-0-3",
+                label: "工程实践能力",
+                status: "pending",
+                type: "keypoint",
+              },
+              {
+                id: "k-0-4",
+                label: "沟通与协作能力",
+                status: "pending",
+                type: "keypoint",
+              },
+            ],
+          },
+          {
+            id: "sec-1",
+            label: "个人介绍",
+            status: "pending",
+            type: "section",
+            children: [
+              {
+                id: "k-1-1",
+                label: "基本信息",
+                status: "pending",
+                type: "concept",
+                description: "地点：杭州 | 出生年月: 1999.08",
+              },
+              {
+                id: "k-1-2",
+                label: "工作经验",
+                status: "pending",
+                type: "concept",
+                description:
+                  "5年开发经验(2年开发运维+2.5年测试开发),云原生DevOps, 大数据平台",
+              },
+              {
+                id: "k-1-3",
+                label: "特点",
+                status: "pending",
+                type: "concept",
+                description: "认真负责; 性格稳定, 相处融洽",
+                children: [
+                  {
+                    id: "k-1-3-1",
+                    label: "特点1",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "问题解决者; 文档读了很多所以上手特别快,(所以也会懒得记一些概念, 但相应的, 知道它指什么, 查的也很快);",
+                  },
+                  {
+                    id: "k-1-3-2",
+                    label: "特点2",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "善于换位思考, 关注用户的体验; 也对各种事物抱有热情与好奇, 乐于尝试",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "sec-2",
+            label: "教育背景",
+            status: "pending",
+            type: "section",
+            children: [
+              {
+                id: "k-2-1",
+                label: "浙江科技大学",
+                status: "pending",
+                type: "concept",
+                description: "本科; 非科班; 自学IT",
+              },
+              {
+                id: "k-2-2",
+                label: "相关课程",
+                status: "pending",
+                type: "concept",
+                description:
+                  "人工智能 (ML西瓜书 80%的算式or伪代码都推导过); ACM; 数学建模; ",
+              },
+              {
+                id: "k-2-3",
+                label: "学习表现",
+                status: "pending",
+                type: "concept",
+              },
+            ],
+          },
+          {
+            id: "sec-3",
+            label: "工作经历",
+            status: "pending",
+            type: "section",
+            children: [
+              {
+                id: "k-3-1",
+                label: "诺基亚: 实习",
+                status: "pending",
+                type: "concept",
+                description: "Python开发实习生 | 大四实习",
+              },
+              {
+                id: "k-3-2",
+                label: "诺基亚: 测试开发",
+                status: "pending",
+                type: "concept",
+                description: "时间",
+                children: [
+                  {
+                    id: "k-3-2-1",
+                    label: "工作内容",
+                    status: "pending",
+                    type: "keypoint",
+                    description: "开发维护测试框架; 落地实现idea",
+                  },
+                  {
+                    id: "k-3-2-2",
+                    label: "亮点",
+                    status: "pending",
+                    type: "keypoint",
+                    description: "收集意见, 认真迭代功能, 获得年度表彰",
+                  },
+                  {
+                    id: "k-3-2-3",
+                    label: "背景补充",
+                    status: "alignment",
+                    type: "keypoint",
+                    description:
+                      "5G ; CloudRAN (云无线接入网); ?容器; ?前后端; ?为什么不用已有的xxx框架",
+                  },
+                ],
+              },
+              {
+                id: "k-3-3",
+                label: "浙大网新恒天-美国道富: DevOps",
+                status: "pending",
+                type: "concept",
+                description: "开发运维工程师 | 2023-11 至 2025-12",
+                description: "",
+                children: [
+                  {
+                    id: "k-3-1-1",
+                    label: "工作内容",
+                    status: "pending",
+                    type: "keypoint",
+                    description: "开发维护测试框架; 落地实现idea",
+                  },
+                  {
+                    id: "k-3-1-2",
+                    label: "亮点",
+                    status: "pending",
+                    type: "keypoint",
+                    description: "收集意见, 认真迭代功能, 获得年度表彰",
+                  },
+                  {
+                    id: "k-3-1-3",
+                    label: "背景补充",
+                    status: "alignment",
+                    type: "keypoint",
+                    description:
+                      "5G ; CloudRAN (云无线接入网); ?容器; ?前后端; ?为什么不用已有的xxx框架",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "sec-4",
+            label: "项目经历",
+            status: "pending",
+            type: "section",
+            children: [
+              {
+                id: "k-4-1",
+                label: "Databricks平台与CICD Pipeline集成",
+                status: "pending",
+                type: "concept",
+                description:
+                  "企业内CICD Pipeline，使用自定义配置文件(.grd)进行AWS资源部署，后因对databricks新功能支持需求较多，CICD databricks模块单独拆出，由团队架构师与我负责开发维护。",
+                children: [
+                  {
+                    id: "k-4-1-1",
+                    label: "DBS 介绍",
+                    status: "alignment",
+                    type: "keypoint",
+                    description: "基于公有云的大数据平台",
+                    children: [
+                      {
+                        id: "k-4-1-1-1",
+                        label: "行业地位",
+                        status: "alignment",
+                        type: "keypoint",
+                        description:
+                          "（2025年底数据）全球独角兽排名第七, 前十中唯一的大数据公司，排名在蚂蚁之后Anthropic之前",
+                      },
+                      {
+                        id: "k-4-1-1-2",
+                        label: "应用范围",
+                        status: "alignment",
+                        type: "keypoint",
+                        description:
+                          "可处理数据量？ GB到EB（国家级，数据中心规模）级别; 哪些企业在用？全球财富500强中，超过60%的企业在使用。",
+                      },
+                      {
+                        id: "k-4-1-1-3",
+                        label: "未来趋势: hadoop系与databricks系",
+                        status: "alignment",
+                        type: "keypoint",
+                        description: "？商业化，未来发展",
+                      },
+                    ],
+                  },
+                  {
+                    id: "k-4-1-2",
+                    label: "数据向功能",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "跨域数据目录(Foreign Catalog)；数据质量监控(monitor data quality)；外部数据安全访问控制(external data access)；基于属性的细粒度权限管理(ABAC)等。",
+                  },
+                  {
+                    id: "k-4-1-3",
+                    label: "计算向功能",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "多种类cluster模板(如GPU cluster适配，标准cluster，组专用cluster等)；SQL warehouse(endpoint)；instance pool；runtime与公司内部image service等。",
+                  },
+                  {
+                    id: "k-4-1-4",
+                    label: "安全权限向功能",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "角色权限设计(user/group/SP)；多环境fine-grained access control；SP token/OAuth secret等。",
+                  },
+                  {
+                    id: "k-4-1-5",
+                    label: "其他功能",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "微服务：secret即时权限操作(AWS secret+DBS资源+前端同步)等；极简脚本部署服务：sql/notebook自动以用户所属组default SP权限，代执行代码；平台数据迁移：因login条例修改，迁移all user workspace数据至SSO user workspace下。",
+                  },
+                ],
+              },
+              {
+                id: "k-4-2",
+                label: "自动化测试项目开发与维护",
+                status: "pending",
+                type: "concept",
+                description:
+                  "通信领域Cloud RAN架构中，企业内部测试环境的准备与自动化测试用例执行。",
+                children: [
+                  {
+                    id: "k-4-2-1",
+                    label: "负责内容",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "相关功能模块开发与维护，软硬件环境变化适配，文档维护，问题协助排查与解决。",
+                  },
+                  {
+                    id: "k-4-2-2",
+                    label: "技术栈",
+                    status: "pending",
+                    type: "keypoint",
+                    description: "python, shell, paramiko, robot framework。",
+                  },
+                ],
+              },
+              {
+                id: "k-4-3",
+                label: "测试用例错误原因自动分类",
+                status: "pending",
+                type: "concept",
+                description:
+                  "改进原有测试程序日志收集模块，收集错误栈信息，建立错误log数据集，与测试人员协助完成初版人工标注，完善收集-分析-再推送结果链路。",
+                children: [
+                  {
+                    id: "k-4-3-1",
+                    label: "主要参与部分",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "数据集设计与建立，开发与跑通数据收集-初版算法分类-结果推送流程，及后续日志数据的聚合与可视化。",
+                  },
+                  {
+                    id: "k-4-3-2",
+                    label: "效果",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "管理端汇总报表网页汇总，个人端分类结果邮件分发；分类正确率≈90%(验证集上)。",
+                  },
+                  {
+                    id: "k-4-3-3",
+                    label: "技术栈",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "sklearn, pytorch, grequests, pyecharts, mongodb。",
+                  },
+                ],
+              },
+              {
+                id: "k-4-4",
+                label: "某通信模块内部消息流程可视化-前端部分",
+                status: "pending",
+                type: "concept",
+                description:
+                  "某模块依照一份繁杂的信令流程规范图设计，因流程复杂+运行时产生log文件层次也复杂+测试人员排查问题不方便+解决经验文档零散，编写log解析脚本+拆解原大信令图后+整理解决经验文档，辅以前端可视化，提高对此模块的问题排查效率。",
+                children: [
+                  {
+                    id: "k-4-4-1",
+                    label: "负责内容",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "前端ui，交互逻辑控制和效果的实现；环节局部信令流程图状态样式呈现；异常消息的解决方案栏的增删改查功能(便于集中解决经验文档)。",
+                  },
+                  {
+                    id: "k-4-4-2",
+                    label: "技术栈",
+                    status: "pending",
+                    type: "keypoint",
+                    description:
+                      "vue, pinia, Vue Router, (其他相关的：elasticsearch, logstash, kibana, mysql)。",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "sec-5",
+            label: "荣誉奖项",
+            status: "pending",
+            type: "section",
+            children: [
+              {
+                id: "k-5-1",
+                label: "前20%绩效",
+                status: "pending",
+                type: "concept",
+                description:
+                  "浙大网新恒天 | 2025 | 年度 | 部门级 绩效271划分，拿了2。",
+              },
+              {
+                id: "k-5-2",
+                label: "诺基亚杭州研发中心-第三届蓝鼎奖",
+                status: "pending",
+                type: "concept",
+                description:
+                  "诺基亚 | 2023 | 公司级 | Best ideas of Innovation。",
+              },
+              {
+                id: "k-5-3",
+                label: "诺基亚(杭州)测试协会-2022年度Top3最佳测试工具奖",
+                status: "pending",
+                type: "concept",
+                description: "诺基亚 | 2022 | 年度。",
+              },
+              {
+                id: "k-5-4",
+                label: "自动化测试重要贡献者 | 最佳创意奖",
+                status: "pending",
+                type: "concept",
+                description: "诺基亚 | 2022 | 部门级 | 季度。",
+              },
+              {
+                id: "k-5-5",
+                label: "竞赛获奖: 数学建模二 | 计算机设计三 | 高数",
+                status: "pending",
+                type: "concept",
+                description: "浙江科技大学 | 2021 | 校级。",
+              },
+            ],
+          },
+        ],
+
+        // strategyGroups: [
+        //     {
+        //         id: "sg-1", title: "理论与基础 (Theory)",
+        //         items: [
+        //             { id: "s-1-1", title: "概念定义 (Definition)", description: "当被问及 '什么是...', '解释一下...'", methodology: ["1. 定义 (Definition): 一句话核心概括", "2. 机制 (Mechanism): 它是怎么运作的", "3. 作用 (Usage): 解决了什么问题"] },
+        //             { id: "s-1-2", title: "原理深挖 (Deep Dive)", description: "当被问及 '底层实现...', '源码分析...'", methodology: ["1. 流程 (Flow): 输入->处理->输出", "2. 关键点 (Key): 核心算法/数据结构", "3. 边界 (Edge): 特殊情况处理"] },
+        //             { id: "s-1-3", title: "方案对比 (Comparison)", description: "当被问及 'A和B的区别...', '为什么不用...'", methodology: ["1. 维度 (Dimension): 罗列对比维度(性能/易用性)", "2. 优劣 (Pros/Cons): 各自的强项弱项", "3. 结论 (Conclusion): 不同场景下的选择"] }
+        //         ]
+        //     },
+        //     {
+        //         id: "sg-2", title: "实战与经验 (Practice)",
+        //         items: [
+        //             { id: "s-2-1", title: "项目亮点 (Highlight)", description: "当被问及 '最有成就感的...', '介绍项目...'", methodology: ["S (背景): 业务规模与痛点", "T (目标): 性能/效率指标", "A (行动): 关键技术决策 (Highlight)", "R (结果): 量化数据收益"] },
+        //             { id: "s-2-2", title: "故障排查 (Troubleshooting)", description: "当被问及 '遇到的难点...', '怎么解决Bug...'", methodology: ["1. 现象 (Symptom): 问题表现与影响", "2. 定位 (Debug): 排查思路与工具", "3. 根因 (Root Cause): 本质原因分析", "4. 修复 (Fix): 临时方案+长期方案"] },
+        //             { id: "s-2-3", title: "技术选型 (Decision)", description: "当被问及 '为什么选这个栈...', '架构设计...'", methodology: ["1. 约束 (Constraints): 团队/时间/业务限制", "2. 选项 (Options): 备选方案评估", "3. 权衡 (Trade-off): 牺牲了什么换取了什么"] }
+        //         ]
+        //     },
+        //     {
+        //         id: "sg-3", title: "思维与软技能 (Mindset)",
+        //         items: [
+        //             { id: "s-3-1", title: "协作冲突 (Conflict)", description: "当被问及 '意见不合...', '推进困难...'", methodology: ["1. 理解 (Empathy): 换位思考对方立场", "2. 沟通 (Comm): 寻找共同目标", "3. 方案 (Win-Win): 提出双赢解法"] },
+        //             { id: "s-3-2", title: "宏观视野 (Vision)", description: "当被问及 '未来规划...', '行业看法...'", methodology: ["1. 观察 (Observe): 现状与趋势", "2. 关联 (Relate): 对业务/个人的影响", "3. 行动 (Plan): 准备如何应对"] }
+        //         ]
+        //     }
+        // ],
+        strategyGroups: [
+          {
+            id: "sg-1",
+            title: "问题澄清类问题 (Question Clarification)",
+            description: "主动获取必要信息、消除歧义、确保理解一致性的沟通能力",
+            items: [
+              {
+                id: "s-1-1",
+                title: "范围模糊问题 (Scope Clarification)",
+                description: "当问题包含模糊范围、缺少具体限定条件时",
+                example: [
+                  "请谈谈你如何提高团队效率...",
+                  "你如何处理用户反馈...",
+                  "如何优化项目流程...",
+                ],
+                methodology: [
+                  "1. S（识别情境）：快速判断问题是否存在模糊性",
+                  "2. T（触发信号）：识别需要澄清的信号（如范围、术语、信息缺失）",
+                  "3. A（澄清行动）：采用5W2H框架获取关键信息",
+                  "4. R（确认结果）：确保双方对问题理解达成一致",
+                  "5. Q（准备回答）：基于澄清后的信息组织回答",
+                ],
+              },
+              {
+                id: "s-1-2",
+                title: "术语歧义问题 (Terminology Clarification)",
+                description: "当问题中存在专业术语或模糊概念时",
+                example: [
+                  "你如何处理用户的'痛点'...",
+                  "请说明你对'敏捷开发'的理解...",
+                  "如何提升产品的'用户体验'...",
+                ],
+                methodology: [
+                  "1. 识别歧义术语：定位问题中可能存在歧义的专业术语",
+                  "2. 温和确认：以专业态度询问术语的具体含义",
+                  "3. 对齐认知：根据确认结果调整自己的理解框架",
+                ],
+              },
+              {
+                id: "s-1-3",
+                title: "信息缺失问题 (Information Gap)",
+                description: "当问题缺少必要的背景信息时",
+                example: [
+                  "如果项目延期，你会怎么做...",
+                  "遇到客户投诉如何处理...",
+                  "如何解决团队冲突...",
+                ],
+                methodology: [
+                  "1. 识别信息缺口：分析回答问题所需的必要背景信息",
+                  "2. 针对性提问：聚焦于缺失的关键信息点",
+                  "3. 构建完整情境：基于补充信息构建完整的问题情境",
+                ],
+              },
+            ],
+          },
+          {
+            id: "sg-2",
+            title: "背景/经历类问题 (Background/Experience)",
+            description:
+              "了解沟通者的职业路径、学习经历、技能积累，评估与需求的适配性",
+            items: [
+              {
+                id: "s-2-1",
+                title: "简历亮点问题 (Resume Highlights)",
+                description: "当被要求详细介绍简历中的某个经历或项目时",
+                example: [
+                  "介绍一下你的...项目",
+                  "你在...项目中的角色是什么...",
+                  "...项目的成果是什么...",
+                ],
+                methodology: [
+                  "1. 快速情境：简要描述经历的背景和目标",
+                  "2. 核心行动：重点强调你采取的关键行动和方法",
+                  "3. 突出结果：使用数据或具体成果展示你的贡献",
+                ],
+              },
+              {
+                id: "s-2-2",
+                title: "职业转型问题 (Career Transition)",
+                description: "当被问及职业转型的原因和准备时",
+                example: [
+                  "为什么从...行业转到...",
+                  "如何应对职业转型的挑战...",
+                  "转型后如何快速适应新岗位...",
+                ],
+                methodology: [
+                  "1. 动机解释：清晰说明职业转型的原因",
+                  "2. 技能迁移：详细阐述过去经历中可迁移的技能",
+                  "3. 新领域准备：说明为转型所做的准备",
+                  "4. 匹配优势：阐述转型带来的独特优势",
+                ],
+              },
+              {
+                id: "s-2-3",
+                title: "经历空白问题 (Employment Gap)",
+                description: "当被问及职业空白期的情况时",
+                example: [
+                  "职业空白期做了什么...",
+                  "如何看待职业空白期...",
+                  "空白期后如何适应工作...",
+                ],
+                methodology: [
+                  "1. 坦诚说明：直接说明空白期的原因",
+                  "2. 积极利用：重点强调空白期的积极利用",
+                  "3. 技能保持：说明如何在空白期保持专业技能",
+                  "4. 重返准备：阐述为重新投入工作所做的准备",
+                ],
+              },
+            ],
+          },
+          {
+            id: "sg-3",
+            title: "行为类问题 (Behavioral Questions)",
+            description: "通过询问过去的行为表现，了解行为模式和能力",
+            items: [
+              {
+                id: "s-3-1",
+                title: "团队协作问题 (Team Collaboration)",
+                description: "当被问及团队合作经历和冲突处理时",
+                example: [
+                  "团队合作时遇到分歧...",
+                  "如何处理团队中不同意见...",
+                  "作为团队成员如何贡献价值...",
+                ],
+                methodology: [
+                  "1. 明确角色：清晰定位自己在团队中的具体角色",
+                  "2. 描述贡献：具体说明你在团队中的独特价值",
+                  "3. 突出协作：阐述你如何与不同角色的成员配合",
+                  "4. 量化成果：说明团队协作带来的最终成果",
+                ],
+              },
+              {
+                id: "s-3-2",
+                title: "问题解决问题 (Problem Solving)",
+                description: "当被问及解决复杂问题的经历时",
+                example: [
+                  "面对突发问题如何处理...",
+                  "解决过最具挑战性的问题...",
+                  "如何分析并解决复杂问题...",
+                ],
+                methodology: [
+                  "1. C（挑战）：深入分析问题的本质和复杂度",
+                  "2. A（行动）：拆解问题、制定策略、执行落地",
+                  "3. R（结果）：量化解决问题带来的价值",
+                ],
+              },
+              {
+                id: "s-3-3",
+                title: "冲突处理问题 (Conflict Resolution)",
+                description: "当被问及处理人际冲突的经历时",
+                example: [
+                  "与同事意见不合时...",
+                  "如何处理与上级的冲突...",
+                  "当团队内部出现矛盾时...",
+                ],
+                methodology: [
+                  "1. L（倾听）：保持冷静，专注倾听对方的观点",
+                  "2. A（认可）：认可对方的感受和观点的合理性",
+                  "3. R（回应）：表达自己的观点，使用温和的表达方式",
+                  "4. A（行动）：提出建设性的解决方案，寻找共同利益点",
+                ],
+              },
+            ],
+          },
+          {
+            id: "sg-4",
+            title: "技术/专业类问题 (Technical/Professional)",
+            description: "验证专业知识深度、技能掌握程度、解决专业问题的能力",
+            items: [
+              {
+                id: "s-4-1",
+                title: "核心技能问题 (Core Skills)",
+                description: "当被问及对岗位核心技能的掌握程度时",
+                example: [
+                  "请说明你对...的掌握程度",
+                  "如何应用...技能解决问题...",
+                  "你的...技能有哪些实际应用...",
+                ],
+                methodology: [
+                  "1. F（特性）：清晰描述你掌握的技能的核心特点",
+                  "2. A（优势）：说明该技能相对于其他方法的优势",
+                  "3. B（收益）：阐述该技能为公司或项目带来的实际价值",
+                ],
+              },
+              {
+                id: "s-4-2",
+                title: "技术难题问题 (Technical Challenges)",
+                description: "当被问及解决复杂技术问题的经历时",
+                example: [
+                  "解决过最复杂的技术问题...",
+                  "如何处理技术故障...",
+                  "遇到技术瓶颈时如何突破...",
+                ],
+                methodology: [
+                  "1. S（情境）：描述技术难题出现的背景和上下文",
+                  "2. T（任务）：明确需要解决的技术目标和约束条件",
+                  "3. A（行动）：技术分析、解决方案、实施过程、优化调整",
+                  "4. R（结果）：量化技术方案带来的成果",
+                ],
+              },
+              {
+                id: "s-4-3",
+                title: "行业认知问题 (Industry Insights)",
+                description: "当被问及对行业发展趋势的了解时",
+                example: [
+                  "如何看待...行业的发展",
+                  "行业未来的趋势是什么...",
+                  "行业面临的主要挑战有哪些...",
+                ],
+                methodology: [
+                  "1. 趋势分析：阐述行业当前的主要发展趋势",
+                  "2. 洞察解读：分析这些趋势对行业格局的影响",
+                  "3. 应用思考：说明如何应对这些趋势",
+                ],
+              },
+            ],
+          },
+          {
+            id: "sg-5",
+            title: "动机/价值观类问题 (Motivation/Values)",
+            description:
+              "了解沟通者的动机、价值观与组织文化的匹配度、长期发展潜力",
+            items: [
+              {
+                id: "s-5-1",
+                title: "职业目标问题 (Career Goals)",
+                description: "当被问及职业规划和长期目标时",
+                example: [
+                  "未来3-5年的规划...",
+                  "职业发展的目标是什么...",
+                  "如何实现自己的职业目标...",
+                ],
+                methodology: [
+                  "1. Specific（具体）：明确描述职业目标的具体内容",
+                  "2. Measurable（可衡量）：设定可量化的目标指标",
+                  "3. Achievable（可实现）：确保目标具有现实可行性",
+                  "4. Relevant（相关）：说明目标与目标岗位的关联性",
+                  "5. Time-bound（时限）：为目标设定明确的时间节点",
+                ],
+              },
+              {
+                id: "s-5-2",
+                title: "公司契合问题 (Company Fit)",
+                description: "当被问及选择公司的原因和对公司的了解时",
+                example: [
+                  "为什么选择我们公司...",
+                  "对我们公司有什么了解...",
+                  "你能为我们公司带来什么...",
+                ],
+                methodology: [
+                  "1. 公司研究：展示对公司的深入了解",
+                  "2. 动机阐述：说明选择该公司的具体原因",
+                  "3. 匹配分析：将自己的能力与公司需求进行匹配",
+                  "4. 贡献展望：阐述自己能够为公司带来的价值",
+                ],
+              },
+              {
+                id: "s-5-3",
+                title: "价值观匹配问题 (Values Alignment)",
+                description: "当被问及个人价值观和工作准则时",
+                example: [
+                  "你最看重的工作价值观...",
+                  "如何看待工作中的诚信问题...",
+                  "你的价值观是什么...",
+                ],
+                methodology: [
+                  "1. 价值观提炼：清晰表达自己最看重的核心价值观",
+                  "2. 经历支撑：结合具体经历说明如何践行这些价值观",
+                  "3. 公司对齐：说明这些价值观与公司核心价值观的匹配",
+                  "4. 行为承诺：阐述在未来工作中如何继续践行",
+                ],
+              },
+            ],
+          },
+          {
+            id: "sg-6",
+            title: "情境类问题 (Situational Questions)",
+            description: "通过假设的情境，了解应变能力、决策能力、问题解决能力",
+            items: [
+              {
+                id: "s-6-1",
+                title: "危机管理问题 (Crisis Management)",
+                description: "当被问及如何处理突发危机和紧急情况时",
+                example: [
+                  "项目延期时如何应对...",
+                  "客户投诉危机如何处理...",
+                  "突发技术故障时的应对...",
+                ],
+                methodology: [
+                  "1. R（响应）：快速采取紧急措施控制危机蔓延",
+                  "2. R（恢复）：制定详细的恢复计划，逐步恢复正常运营",
+                  "3. R（反思）：分析危机发生的根本原因，制定预防措施",
+                ],
+              },
+              {
+                id: "s-6-2",
+                title: "决策制定问题 (Decision Making)",
+                description: "当被问及如何在复杂情况下做出决策时",
+                example: [
+                  "资源有限时如何抉择...",
+                  "面对多个项目如何优先级排序...",
+                  "如何做出重要的决策...",
+                ],
+                methodology: [
+                  "1. R（识别）：识别问题的本质、关键信息、约束条件",
+                  "2. P（计划）：收集信息、评估方案、选择最优方案",
+                  "3. D（执行）：制定详细的执行计划，明确责任分工",
+                ],
+              },
+              {
+                id: "s-6-3",
+                title: "伦理困境问题 (Ethical Dilemmas)",
+                description: "当被问及如何处理道德和伦理冲突时",
+                example: [
+                  "遇到利益冲突时...",
+                  "发现同事违规行为如何处理...",
+                  "如何平衡个人利益与公司利益...",
+                ],
+                methodology: [
+                  "1. 锚定原则：明确自己的核心道德原则",
+                  "2. 分析困境：识别伦理困境的核心冲突点",
+                  "3. 权衡利弊：分析不同决策可能带来的影响",
+                  "4. 明确立场：基于核心原则做出决策，最小化负面影响",
+                ],
+              },
+            ],
+          },
+        ],
+        preferences: [
+          { id: "pref-1", label: "注重 性能体验", checked: true },
+          { id: "pref-2", label: "关注 工程规范", checked: false },
+          { id: "pref-3", label: "偏好 业务价值", checked: false },
+        ],
+      };
+
+      /**
+       * ==========================================
+       * STATE STORE
+       * ==========================================
+       */
+      const Store = {
+        data: JSON.parse(JSON.stringify(INITIAL_DATA)),
+        memoItems: [],
+        ui: {
+          expandedNodes: new Set(),
+          openGroups: new Set(),
+          selectedStrategyId: null,
+          selectedMemoIds: new Set(),
+          alignmentStatus: "check", // 'check', 'aligned', 'lost'
+          contextMenu: { visible: false, x: 0, y: 0, nodeId: null },
+          editingMemoId: null,
+          editingPrefId: null,
+        },
+
+        init() {
+          // Default expanded: level 0
+          this.data.outline.forEach((node) =>
+            this.ui.expandedNodes.add(node.id),
+          );
+          if (this.data.strategyGroups.length > 0)
+            this.ui.openGroups.add(this.data.strategyGroups[0].id);
+          this.renderAll();
+        },
+
+        // --- Actions ---
+        updateOutlineStatus(id, newStatus) {
+          const findAndUpdate = (nodes) => {
+            for (let node of nodes) {
+              if (node.id === id) {
+                node.status = newStatus;
+                return true;
+              }
+              if (node.children && findAndUpdate(node.children)) return true;
+            }
+            return false;
+          };
+          findAndUpdate(this.data.outline);
+          // Auto expand/collapse logic
+          if (newStatus === "current") this.ui.expandedNodes.add(id);
+          if (newStatus === "done" || newStatus === "skipped")
+            this.ui.expandedNodes.delete(id);
+
+          Render.outline();
+        },
+
+        toggleNode(id) {
+          if (this.ui.expandedNodes.has(id)) this.ui.expandedNodes.delete(id);
+          else this.ui.expandedNodes.add(id);
+          Render.outline();
+        },
+
+        toggleStrategyGroup(id) {
+          if (this.ui.openGroups.has(id)) this.ui.openGroups.delete(id);
+          else this.ui.openGroups.add(id);
+          Render.strategy();
+        },
+
+        selectStrategyItem(id) {
+          this.ui.selectedStrategyId = id;
+          Render.strategy();
+        },
+
+        addMemo(label, sourceId = null) {
+          if (
+            sourceId &&
+            this.memoItems.find((m) => m.sourceNodeId === sourceId)
+          )
+            return;
+          this.memoItems.push({
+            id: "memo-" + Date.now(),
+            label: label,
+            timestamp: Date.now(),
+            sourceNodeId: sourceId,
+          });
+          Render.memo();
+        },
+
+        toggleMemoSelect(id) {
+          if (this.ui.selectedMemoIds.has(id))
+            this.ui.selectedMemoIds.delete(id);
+          else this.ui.selectedMemoIds.add(id);
+          Render.memo();
+        },
+
+        removeMemo(id) {
+          this.memoItems = this.memoItems.filter((m) => m.id !== id);
+          this.ui.selectedMemoIds.delete(id);
+          Render.memo();
+        },
+
+        compressMemos(newLabel) {
+          const ids = Array.from(this.ui.selectedMemoIds);
+          this.memoItems = this.memoItems.filter((m) => !ids.includes(m.id));
+          this.memoItems.push({
+            id: "comp-" + Date.now(),
+            label: newLabel,
+            timestamp: Date.now(),
+            isCompressed: true,
+          });
+          this.ui.selectedMemoIds.clear();
+          Render.memo();
+        },
+
+        updateMemoLabel(id, label) {
+          const item = this.memoItems.find((m) => m.id === id);
+          if (item) item.label = label;
+          this.ui.editingMemoId = null;
+          Render.memo();
+        },
+
+        togglePref(id) {
+          const p = this.data.preferences.find((p) => p.id === id);
+          if (p) p.checked = !p.checked;
+          Render.preferences();
+        },
+
+        addPref(label) {
+          this.data.preferences.push({
+            id: "pref-" + Date.now(),
+            label,
+            checked: true,
+          });
+          Render.preferences();
+        },
+
+        deletePref(id) {
+          this.data.preferences = this.data.preferences.filter(
+            (p) => p.id !== id,
+          );
+          Render.preferences();
+        },
+
+        editPref(id, label) {
+          const p = this.data.preferences.find((p) => p.id === id);
+          if (p) p.label = label;
+          this.ui.editingPrefId = null;
+          Render.preferences();
+        },
+
+        importData(json) {
+          if (json.outline && json.strategyGroups) {
+            this.data = json;
+            this.memoItems = [];
+            this.ui.selectedStrategyId = null;
+            this.renderAll();
+          }
+        },
+
+        renderAll() {
+          Render.outline();
+          Render.strategy();
+          Render.memo();
+          Render.preferences();
+          Render.alignment();
+        },
+      };
+
+      /**
+       * ==========================================
+       * RENDERERS (HTML String Generators)
+       * ==========================================
+       */
+      const Render = {
+        outline() {
+          const container = document.getElementById("outline-tree");
+          let html = "";
+
+          const renderNode = (nodes, level) => {
+            let markup = "";
+            nodes.forEach((node) => {
+              const isExpanded = Store.ui.expandedNodes.has(node.id);
+              const hasChildren = node.children && node.children.length > 0;
+
+              // Icons
+              let statusIcon = "";
+              let statusClass = "";
+              let rowClass = "py-1 border-l-4 border-transparent";
+
+              if (node.status === "current") {
+                statusIcon = `<i data-lucide="play" class="w-5 h-5 text-blue-600 fill-blue-600 animate-pulse"></i>`;
+                rowClass =
+                  "bg-blue-50/60 -mx-2 px-2 py-2 rounded-lg border-l-4 border-blue-500 shadow-sm my-1";
+                statusClass = "text-blue-800 font-bold";
+              } else if (node.status === "done") {
+                statusIcon = `<i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500"></i>`;
+                statusClass =
+                  "text-slate-400 line-through decoration-slate-300";
+              } else if (node.status === "alignment") {
+                statusIcon = `<i data-lucide="target" class="w-5 h-5 text-amber-500"></i>`;
+                statusClass = "text-amber-700 font-bold";
+              } else if (node.status === "skipped") {
+                statusIcon = `<i data-lucide="ban" class="w-5 h-5 text-slate-300"></i>`;
+                statusClass = "text-slate-300 decoration-slate-200";
+              } else {
+                statusIcon = `<i data-lucide="circle" class="w-5 h-5 text-slate-300 hover:text-slate-400"></i>`;
+                statusClass = "text-slate-700";
+              }
+
+              markup += `
+                        <div class="select-none transition-all duration-300 relative group/row ${rowClass}">
+                            <div class="flex items-start cursor-pointer" onclick="Handlers.toggleNode('${node.id}')" oncontextmenu="Handlers.openContextMenu(event, '${node.id}')">
+                                <button class="mr-1 mt-0.5 p-0.5 rounded hover:bg-slate-200 text-slate-400 ${!hasChildren ? "invisible" : ""}">
+                                    ${isExpanded ? '<i data-lucide="chevron-down" width="16"></i>' : '<i data-lucide="chevron-right" width="16"></i>'}
+                                </button>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="event.stopPropagation(); Handlers.cycleStatus('${node.id}', '${node.status}')" class="hover:scale-110 transition-transform">
+                                            ${statusIcon}
+                                        </button>
+                                        <span onclick="event.stopPropagation(); Handlers.setNodeStatus('current', '${node.id}')" class="font-medium text-lg leading-tight transition-colors flex-1 ${statusClass}">
+                                            ${node.label}
+                                        </span>
+                                        <button onclick="event.stopPropagation(); Handlers.addMemoFromOutline('${node.id}', '${node.label.replace(/'/g, "\\'")}')" class="opacity-0 group-hover/row:opacity-100 transition-opacity p-1 rounded hover:bg-indigo-100 text-indigo-400 hover:text-indigo-600 ${node.status === "current" ? "opacity-50" : ""}">
+                                            <i data-lucide="layers" width="16"></i><span class="text-[10px] font-bold absolute -top-1 -right-1">+</span>
+                                        </button>
+                                    </div>
+                                    ${
+                                      node.description &&
+                                      (node.status === "current" ||
+                                        isExpanded) &&
+                                      node.status !== "skipped"
+                                        ? `
+                                        <div class="mt-2 ml-7 p-3 rounded-md text-sm text-slate-600 border border-slate-200 shadow-sm flex items-start gap-2 ${node.status === "current" ? "bg-white ring-1 ring-blue-100" : "bg-slate-50"}">
+                                            ${node.status === "alignment" ? '<i data-lucide="target" width="14" class="mt-0.5 text-amber-500 shrink-0"></i>' : '<i data-lucide="file-text" width="14" class="mt-0.5 opacity-50 shrink-0"></i>'}
+                                            <p>${node.description}</p>
+                                        </div>
+                                    `
+                                        : ""
+                                    }
+                                </div>
+                            </div>
+                            ${hasChildren && isExpanded ? `<div class="ml-4 pl-2 border-l border-slate-200 mt-1">${renderNode(node.children, level + 1)}</div>` : ""}
+                        </div>
+                    `;
+            });
+            return markup;
+          };
+
+          container.innerHTML = renderNode(Store.data.outline, 0);
+          lucide.createIcons();
+        },
+
+        strategy() {
+          const listContainer = document.getElementById("strategy-list");
+          const detailContainer = document.getElementById("methodology-panel");
+
+          // List
+          let listHtml = "";
+          Store.data.strategyGroups.forEach((group) => {
+            const isOpen = Store.ui.openGroups.has(group.id);
+            listHtml += `
+                    <div class="border border-slate-200 rounded-lg overflow-hidden shrink-0">
+                        <button onclick="Store.toggleStrategyGroup('${group.id}')" class="w-full flex items-center gap-2 p-2.5 bg-slate-50 hover:bg-slate-100 transition-colors text-left text-sm font-bold text-slate-700">
+                            ${isOpen ? '<i data-lucide="folder-open" width="16" class="text-sky-500"></i>' : '<i data-lucide="folder" width="16" class="text-slate-400"></i>'}
+                            <span class="flex-1">${group.title}</span>
+                            <i data-lucide="chevron-right" width="14" class="transition-transform text-slate-400 ${isOpen ? "rotate-90" : ""}"></i>
+                        </button>
+                        ${
+                          isOpen
+                            ? `
+                            <div class="bg-white p-1 space-y-1">
+                                ${group.items
+                                  .map(
+                                    (item) => `
+                                    <button onclick="Store.selectStrategyItem('${item.id}')" class="w-full text-left px-3 py-2 rounded text-xs transition-colors flex flex-col gap-0.5 ${Store.ui.selectedStrategyId === item.id ? "bg-sky-100 text-sky-800 font-medium" : "text-slate-600 hover:bg-slate-50"}">
+                                        <div class="flex justify-between items-center w-full">
+                                            <span>${item.title}</span>
+                                            ${Store.ui.selectedStrategyId === item.id ? '<div class="w-1.5 h-1.5 rounded-full bg-sky-500"></div>' : ""}
+                                        </div>
+                                    </button>
+                                `,
+                                  )
+                                  .join("")}
+                            </div>
+                        `
+                            : ""
+                        }
+                    </div>
+                `;
+          });
+          listContainer.innerHTML = listHtml;
+
+          // Detail
+          const activeItem = Store.data.strategyGroups
+            .flatMap((g) => g.items)
+            .find((i) => i.id === Store.ui.selectedStrategyId);
+          if (activeItem) {
+            detailContainer.innerHTML = `
+                    <div class="flex items-center gap-1.5 mb-2 text-sky-700 font-bold text-xs uppercase tracking-wider shrink-0">
+                        <i data-lucide="lightbulb" width="14"></i>
+                        <span>回答方法论 (${activeItem.title})</span>
+                    </div>
+                    <div class="bg-sky-50/50 rounded-lg p-3 border border-sky-100 flex-1 overflow-y-auto custom-scrollbar">
+                        <div class="text-xs text-slate-500 mb-3 italic">${activeItem.description}</div>
+                        <ul class="space-y-2">
+                            ${activeItem.methodology
+                              .map(
+                                (step) => `
+                                <li class="text-xs text-slate-700 leading-snug flex items-start gap-2">
+                                    <span class="w-1.5 h-1.5 mt-1.5 rounded-full bg-sky-400 shrink-0"></span>
+                                    <span>${step}</span>
+                                </li>
+                            `,
+                              )
+                              .join("")}
+                        </ul>
+                    </div>
+                `;
+            detailContainer.classList.remove("opacity-50", "grayscale");
+          } else {
+            detailContainer.innerHTML = `
+                     <div class="h-full flex flex-col items-center justify-center text-slate-400 text-xs text-center">
+                         <i data-lucide="compass" width="24" class="mb-2 opacity-20"></i>
+                         <p>请点击上方具体类型<br/>查看通用回答逻辑</p>
+                     </div>
+                `;
+            detailContainer.classList.add("opacity-50", "grayscale");
+          }
+
+          lucide.createIcons();
+        },
+
+        memo() {
+          const header = document.getElementById("memo-header");
+          const list = document.getElementById("memo-list");
+          const isOverloaded = Store.memoItems.length > 7;
+          const selectedCount = Store.ui.selectedMemoIds.size;
+
+          // Header
+          header.className = `p-4 border-b flex justify-between items-center ${isOverloaded ? "bg-amber-50" : "bg-slate-50"}`;
+          header.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layers" width="20" class="${isOverloaded ? "text-amber-600" : "text-indigo-600"}"></i>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-bold text-slate-700">短期记忆</h3>
+                            <span class="text-[10px] bg-black/10 px-1.5 py-0.5 rounded text-slate-500 font-mono opacity-70">[AI Backend]</span>
+                        </div>
+                        <span class="text-xs ${isOverloaded ? "text-amber-600 font-bold" : "text-slate-400"}">负荷: ${Store.memoItems.length} / 7±2 块</span>
+                    </div>
+                </div>
+                ${
+                  selectedCount > 1
+                    ? `
+                    <button onclick="Handlers.openCompressModal()" class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all active:scale-95">
+                        <i data-lucide="minimize-2" width="14"></i> <span>压缩 (${selectedCount})</span>
+                    </button>
+                `
+                    : ""
+                }
+            `;
+
+          // List
+          if (Store.memoItems.length === 0) {
+            list.innerHTML = `<div class="text-center text-slate-400 mt-10 italic text-sm">记忆区为空。<br/>在左侧激活大纲要点或从板书提取。</div>`;
+          } else {
+            list.innerHTML = Store.memoItems
+              .map((item) => {
+                const isSelected = Store.ui.selectedMemoIds.has(item.id);
+                const isEditing = Store.ui.editingMemoId === item.id;
+                return `
+                        <div class="relative group flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 ${isSelected ? "bg-indigo-50 border-indigo-300" : "bg-white border-slate-200 hover:border-indigo-200 hover:shadow-md"} ${item.isCompressed ? "border-l-4 border-l-purple-500" : ""}">
+                            <button onclick="Store.toggleMemoSelect('${item.id}')" class="text-slate-400 hover:text-indigo-600 shrink-0">
+                                ${isSelected ? '<i data-lucide="check-square" width="20" class="text-indigo-600"></i>' : '<i data-lucide="square" width="20"></i>'}
+                            </button>
+                            <div class="flex-1 min-w-0">
+                                ${
+                                  isEditing
+                                    ? `
+                                    <input value="${item.label}" onkeydown="if(event.key==='Enter') Handlers.saveMemoEdit(this.value)" onblur="Handlers.saveMemoEdit(this.value)" class="w-full px-1 py-0.5 border-b border-indigo-500 focus:outline-none bg-transparent font-medium" autoFocus>
+                                `
+                                    : `
+                                    <span ondblclick="Handlers.startEditMemo('${item.id}')" class="block font-medium text-slate-700 truncate cursor-pointer select-none">${item.label}</span>
+                                `
+                                }
+                                ${item.isCompressed ? '<span class="text-[10px] uppercase tracking-wider text-purple-500 font-bold">已压缩概念</span>' : ""}
+                            </div>
+                            <div class="flex items-center opacity-0 group-hover:opacity-100 transition-opacity gap-1 shrink-0 bg-white/80 rounded">
+                                <button onclick="Handlers.startEditMemo('${item.id}')" class="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-indigo-500"><i data-lucide="edit-2" width="14"></i></button>
+                                <button onclick="Store.removeMemo('${item.id}')" class="p-1 hover:bg-red-50 rounded text-slate-400 hover:text-red-500"><i data-lucide="x" width="14"></i></button>
+                            </div>
+                        </div>
+                    `;
+              })
+              .join("");
+            // Auto focus logic needs to be handled after insertion for input
+            if (Store.ui.editingMemoId) {
+              const input = list.querySelector("input");
+              if (input) input.focus();
+            }
+          }
+          lucide.createIcons();
+        },
+
+        preferences() {
+          const list = document.getElementById("preference-list");
+          list.innerHTML = Store.data.preferences
+            .map((pref) => {
+              const isEditing = Store.ui.editingPrefId === pref.id;
+              return `
+                    <div class="group flex items-center gap-2 p-2 rounded-lg border transition-all ${pref.checked ? "bg-amber-50 border-amber-300" : "bg-white border-slate-200 hover:bg-slate-50"}">
+                        <div onclick="Store.togglePref('${pref.id}')" class="cursor-pointer text-slate-400 hover:text-amber-500">
+                             ${pref.checked ? '<i data-lucide="check-square" width="18" class="text-amber-500"></i>' : '<i data-lucide="square" width="18"></i>'}
+                        </div>
+                         <div class="flex-1 min-w-0">
+                            ${
+                              isEditing
+                                ? `
+                                <input value="${pref.label}" onkeydown="if(event.key==='Enter') Handlers.savePrefEdit(this.value)" onblur="Handlers.savePrefEdit(this.value)" class="w-full text-sm p-1 border-b border-amber-500 outline-none bg-transparent">
+                            `
+                                : `
+                                <span ondblclick="Handlers.startEditPref('${pref.id}')" class="block text-sm font-medium select-none truncate ${pref.checked ? "text-slate-800" : "text-slate-400"}">${pref.label}</span>
+                            `
+                            }
+                        </div>
+                        <div class="hidden group-hover:flex items-center gap-1">
+                             <button onclick="Handlers.startEditPref('${pref.id}')" class="p-1 text-slate-300 hover:text-amber-600"><i data-lucide="edit-2" width="12"></i></button>
+                             <button onclick="Store.deletePref('${pref.id}')" class="p-1 text-slate-300 hover:text-red-500"><i data-lucide="trash-2" width="12"></i></button>
+                        </div>
+                    </div>
+                `;
+            })
+            .join("");
+          if (Store.ui.editingPrefId) {
+            const input = list.querySelector("input");
+            if (input) input.focus();
+          }
+          lucide.createIcons();
+        },
+
+        alignment() {
+          const container = document.getElementById("alignment-panel");
+          const s = Store.ui.alignmentStatus;
+
+          if (s === "check") {
+            container.innerHTML = `
+                    <p class="text-sm text-slate-600 mb-3">推进前请确认双方是否都理解</p>
+                    <div class="flex flex-col gap-2">
+                        <button onclick="Handlers.setAlignment('aligned')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-emerald-200 shadow-md font-bold transition-transform active:scale-95">确认对齐 (Aligned)</button>
+                        <button onclick="Handlers.setAlignment('lost')" class="w-full py-2 bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg text-sm">发现困惑 (Confused)</button>
+                    </div>
+                `;
+          } else if (s === "aligned") {
+            container.innerHTML = `
+                     <div class="w-full p-4 bg-emerald-100 rounded-lg border border-emerald-200 animate-in">
+                        <div class="text-emerald-700 font-bold mb-1">已对齐</div>
+                        <div class="text-emerald-600 text-xs">可继续深入下个话题</div>
+                        <button onclick="Handlers.setAlignment('check')" class="mt-3 text-xs underline text-emerald-800">重置状态</button>
+                     </div>
+                `;
+          } else {
+            container.innerHTML = `
+                     <div class="w-full p-4 bg-rose-100 rounded-lg border border-rose-200 animate-in">
+                        <div class="text-rose-700 font-bold mb-1">失联/疑惑</div>
+                        <div class="text-rose-600 text-xs">减少细节，使用类比，提问互动</div>
+                        <button onclick="Handlers.setAlignment('check')" class="mt-3 text-xs underline text-rose-800">重置状态</button>
+                     </div>
+                `;
+          }
+        },
+      };
+
+      /**
+       * ==========================================
+       * EVENT HANDLERS
+       * ==========================================
+       */
+      const Handlers = {
+        cycleStatus(id, currentStatus) {
+          const cycle = {
+            pending: "current",
+            current: "done",
+            done: "pending",
+            alignment: "current",
+            skipped: "current",
+          };
+          Store.updateOutlineStatus(id, cycle[currentStatus] || "pending");
+        },
+
+        setNodeStatus(status, id = null) {
+          const targetId = id || Store.ui.contextMenu.nodeId;
+          if (targetId) {
+            Store.updateOutlineStatus(targetId, status);
+            this.closeContextMenu();
+          }
+        },
+
+        toggleNode(id) {
+          Store.toggleNode(id);
+        },
+
+        openContextMenu(e, id) {
+          e.preventDefault();
+          const menu = document.getElementById("context-menu");
+          Store.ui.contextMenu = {
+            visible: true,
+            x: e.clientX,
+            y: e.clientY,
+            nodeId: id,
+          };
+          menu.style.left = `${e.clientX}px`;
+          menu.style.top = `${e.clientY}px`;
+          menu.classList.remove("hidden");
+          menu.classList.add("flex");
+        },
+
+        closeContextMenu() {
+          const menu = document.getElementById("context-menu");
+          menu.classList.add("hidden");
+          menu.classList.remove("flex");
+          Store.ui.contextMenu = { visible: false, nodeId: null };
+        },
+
+        addMemoFromOutline(id, label) {
+          Store.addMemo(label, id);
+        },
+
+        extractScratchpad() {
+          const textarea = document.getElementById("scratchpad-input");
+          const text =
+            textarea.value
+              .substring(textarea.selectionStart, textarea.selectionEnd)
+              .trim() ||
+            (textarea.value.length < 50 ? textarea.value.trim() : "");
+
+          if (text) {
+            Store.addMemo(text);
+            if (text === textarea.value.trim()) textarea.value = "";
+          } else {
+            alert("请选择要提取为关键词的文本段落");
+          }
+        },
+
+        startEditMemo(id) {
+          Store.ui.editingMemoId = id;
+          Render.memo();
+        },
+        saveMemoEdit(val) {
+          if (val.trim())
+            Store.updateMemoLabel(Store.ui.editingMemoId, val.trim());
+        },
+
+        openCompressModal() {
+          const modal = document.getElementById("compression-modal");
+          const input = document.getElementById("compression-input");
+          const selectedItems = Store.memoItems.filter((i) =>
+            Store.ui.selectedMemoIds.has(i.id),
+          );
+          const labels = selectedItems.map((i) => i.label).join(", ");
+          input.value = `[归纳] ${labels.substring(0, 15)}${labels.length > 15 ? "..." : ""}`;
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+          input.focus();
+        },
+
+        cancelCompress() {
+          document.getElementById("compression-modal").classList.add("hidden");
+          document.getElementById("compression-modal").classList.remove("flex");
+        },
+
+        confirmCompress() {
+          const input = document.getElementById("compression-input");
+          if (input.value.trim()) {
+            Store.compressMemos(input.value.trim());
+            this.cancelCompress();
+          }
+        },
+
+        startEditPref(id) {
+          Store.ui.editingPrefId = id;
+          Render.preferences();
+        },
+        savePrefEdit(val) {
+          if (val.trim()) Store.editPref(Store.ui.editingPrefId, val.trim());
+        },
+
+        addPreferencePrompt() {
+          const val = prompt("输入新听众偏好:");
+          if (val && val.trim()) Store.addPref(val.trim());
+        },
+
+        setAlignment(s) {
+          Store.ui.alignmentStatus = s;
+          Render.alignment();
+        },
+
+        // Data IO
+        exportData() {
+          const blob = new Blob([JSON.stringify(Store.data, null, 2)], {
+            type: "application/json",
+          });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `narrator-data-${new Date().toISOString().slice(0, 10)}.json`;
+          a.click();
+        },
+
+        triggerImport() {
+          document.getElementById("fileInput").click();
+        },
+      };
+
+      // --- Global Init ---
+      document.addEventListener("click", (e) => {
+        if (Store.ui.contextMenu.visible && !e.target.closest("#context-menu"))
+          Handlers.closeContextMenu();
+      });
+
+      document.getElementById("fileInput").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            Store.importData(JSON.parse(ev.target.result));
+          } catch (err) {
+            alert("Invalid JSON");
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = "";
+      });
+
+      // Start App
+      Store.init();
+    </script>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
